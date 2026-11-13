@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/name: podinfo
     app.kubernetes.io/part-of: gitops-demo
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 3
   selector:
     matchLabels:
@@ -39,17 +39,16 @@ spec:
       containers:
         - name: podinfo
           # Deliberately old: patched live during the GitOps chapter.
-          image: ghcr.io/stefanprodan/podinfo:6.9.4
+          image: ghcr.io/stefanprodan/podinfo:6.5.0
           command:
             - ./podinfo
             - --port=9898
             - --level=info
-            - --random-error=true
           env:
             - name: PODINFO_UI_COLOR
-              value: "#27ae60"
+              value: "#c0392b"
             - name: PODINFO_UI_MESSAGE
-              value: "v3: the release with a bug"
+              value: "v1: running, but out of date"
           ports:
             - name: http
               containerPort: 9898
