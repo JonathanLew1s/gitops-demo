@@ -44,11 +44,12 @@ spec:
             - ./podinfo
             - --port=9898
             - --level=info
+            - --random-error=true
           env:
             - name: PODINFO_UI_COLOR
               value: "#27ae60"
             - name: PODINFO_UI_MESSAGE
-              value: "v2: patched and up to date"
+              value: "v3: the release with a bug"
           ports:
             - name: http
               containerPort: 9898
