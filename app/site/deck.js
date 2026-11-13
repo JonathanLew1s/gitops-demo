@@ -33,8 +33,8 @@ function simulate(ops) {
 
 function drawGraph(el, opsAll, st) {
   const ops = opsAll.slice(0, st + 1).flat();
-  const g = simulate(ops), X = 90, Y = 62, R = 17, padL = 40, padT = 50;
-  const W = padL + Math.max(g.commits.length, 4) * X + 220, H = padT + g.lanes.length * Y + 20;
+  const g = simulate(ops), X = 90, Y = 62, R = 17, padL = 130, padT = 50;
+  const W = Math.max(1100, padL + g.commits.length * X + 240), H = padT + g.lanes.length * Y + 20;
   const pos = (c) => [padL + c.x * X, padT + c.lane * Y];
   const byId = Object.fromEntries(g.commits.map((c) => [c.id, c]));
   let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="git history">`;

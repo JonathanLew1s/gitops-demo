@@ -32,6 +32,7 @@ ASK: which row hurts most today?</aside>
     <div class="card" data-show="3" style="border-color:var(--ok)"><h4>Cluster</h4><p>what we <b>have</b></p></div>
   </div>
   <p class="cap" data-caps='["","Git holds the wanted state: versions, copies, settings.","Argo CD watches git and the cluster, continuously.","When they differ, it changes the cluster to match git. Never the other way around.","Three verbs: watch, compare, reconcile. That is the entire job."]'></p>
+  <div class="iaas"><b>In the VM world</b>A runbook an engineer follows by hand at 2am, replaced by a robot that follows it exactly, every time.</div>
   <div class="onsite"><b>On this site:</b> Argo CD is watching a public GitHub repository. Merge a change and the page changes, with nobody logging into a server.</div>
   <aside class="notes">SAY: the key direction: git is the boss. If the cluster disagrees, the cluster is wrong.
 OPTIONAL: open the Argo CD UI on the tailnet and show the gitops-demo app tree.</aside>
@@ -81,6 +82,7 @@ SECURITY ANGLE: this is also a control against unreviewed changes, malicious or 
     <tr data-show="7"><td><b>Someone edits prod by hand</b></td><td>Reverted automatically, and visible as drift.</td></tr>
     <tr data-show="8"><td><b>The whole cluster is lost</b></td><td>Rebuild from git. <b>Data</b> comes back from backups. That is why we back up.</td></tr>
   </table>
+  <div class="iaas"><b>In the VM world</b>Hypervisor HA restarting your VMs elsewhere, extended to the whole application and its configuration.</div>
   <aside class="notes">SAY: the control plane is separate from the workload. Argo or GitHub being down is an inconvenience, not an outage.
 ASK THE ROOM: which of these rows would be a P1 incident for you today?</aside>
 </section>

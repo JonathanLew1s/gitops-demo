@@ -29,6 +29,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="nnode" data-show="2"><div class="nest-label">Node: another server</div></div>
   </div>
   <p class="cap" data-caps='["","The cluster is the whole data centre, treated as a single pool of computing power.","Nodes are the individual servers. You rarely care which one runs what: the cluster decides.","Add a node and the capacity grows. Lose a node and the work moves. Nobody gets paged to move it by hand."]'></p>
+  <div class="iaas"><b>In the VM world</b>A cluster is like a virtualisation cluster, and a node is one host in it.</div>
   <div class="onsite" data-show="3"><b>On this site:</b> 4 small machines (3 Intel, 1 ARM Mac mini) form the cluster. Same idea whether it's 4 servers or 400.</div>
   <aside class="notes">SAY: avoid "control plane vs worker" unless asked. A node is a server. A cluster is the group.</aside>
 </section>
@@ -41,6 +42,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="card" data-show="2"><h4>Pod</h4><p>A running container (or two that work together). The smallest thing Kubernetes runs.</p></div>
     <div class="card" data-show="3"><h4>Disposable, by design</h4><p>A sick pod is not repaired. It is <b>replaced</b>. We treat them as cattle, not pets.</p></div>
   </div>
+  <div class="iaas"><b>In the VM world</b>Think of a pod as a tiny, disposable virtual machine that starts in seconds and is replaced, not repaired.</div>
   <div class="onsite"><b>On this site:</b> the tiles at the top of the lesson page are real pods. Each name is a different running copy.</div>
   <aside class="notes">SAY: "cattle not pets" is the mindset shift in two words. Nobody logs in to fix a pod; it is just replaced with a fresh one.</aside>
 </section>
@@ -60,6 +62,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="card"><h4>ReplicaSet</h4><p>The supervisor that keeps the headcount right.</p></div>
     <div class="card"><h4>Replicas</h4><p>The identical copies. More than one means no single point of failure.</p></div>
   </div>
+  <div class="iaas"><b>In the VM world</b>Several identical VMs behind a load balancer, except the platform builds, counts and replaces them for you.</div>
   <aside class="notes">SAY: we will do this live: kill a pod when there is one copy (outage), then two copies (nothing visible). The availability bar on the lesson page shows it.</aside>
 </section>
 
@@ -72,6 +75,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="card" data-show="1" style="border-color:var(--warn)"><h4 class="mono">gitops-demo</h4><p>this demo, and nothing else</p></div>
   </div>
   <p class="cap" data-caps='["","Same cluster, separate spaces. Teams share the hardware but not each other’s things.","Each namespace has its own quota (a capacity budget) and its own permissions.","Delete a namespace and everything inside goes with it. A clean way to tidy up."]'></p>
+  <div class="iaas"><b>In the VM world</b>A VLAN or resource pool per department: shared hardware, separate rules and a budget.</div>
   <div class="onsite" data-show="2"><b>On this site:</b> the platform team decides how many pods this namespace may run. The app team cannot raise it. We will test that.</div>
   <aside class="notes">SAY: namespaces are how a shared platform stays safe: separate budgets, separate permissions, separate blast radius.</aside>
 </section>
@@ -86,6 +90,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="arrow" data-show="1">→</div>
     <div class="card" data-show="2"><h4>Any healthy pod</h4><p>pods come and go behind it</p></div>
   </div>
+  <div class="iaas"><b>In the VM world</b>The load-balancer virtual IP in front of a pool of servers.</div>
   <div class="onsite"><b>On this site:</b> refresh the page. The pod name changes but the address never does. That is the Service sharing the work.</div>
   <aside class="notes">SAY: pods are disposable, so their addresses change. The Service is the stable front door. Load balancing for free.</aside>
 </section>
@@ -101,6 +106,7 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
     <div class="place" data-show="2"><div class="box">A real disk<small>PersistentVolume</small></div></div>
   </div>
   <p class="cap" data-caps='["Everything inside a pod is lost when it is replaced.","So an app asks for storage with a request slip (a PVC): size and speed, not which disk.","The platform finds or creates a real disk (a PV) that fits and attaches it.","The pod can die and be replaced; the disk, and the data on it, stay.","Backups are separate: a disk can still be deleted by mistake or malice. Snapshots and off-site copies are the safety net."]'></p>
+  <div class="iaas"><b>In the VM world</b>A request to the storage team for a datastore or LUN, except the match happens automatically.</div>
   <div class="onsite" data-show="3"><b>Remember:</b> git restores the <i>configuration</i>. Only backups restore the <i>data</i>. We will do both live.</div>
   <aside class="notes">SAY: PVC = request, PV = actual disk. That is all most people need. We will use Longhorn snapshots for the backup and restore scene.
 NOTE: Do not go into storage classes unless asked.</aside>
@@ -119,6 +125,7 @@ NOTE: Do not go into storage classes unless asked.</aside>
       <li><b>Fetch from a vault.</b> The app asks a secrets vault at runtime. Nothing is stored in git at all.</li>
       <li><b>Tight access rules.</b> Only named people and systems may read a secret, and every read is logged.</li>
     </ul></div>
+  <div class="iaas"><b>In the VM world</b>The shared admin-password spreadsheet, replaced by a vault with named access and an audit log.</div>
   <div class="onsite" data-show="3"><b>Heads up:</b> by default a Kubernetes Secret is <i>encoded</i>, not encrypted. Anyone allowed to read it can decode it in one command. So who may read is the real control.</div>
   <aside class="notes">SAY: this one is for the security team. The model is: no secret in plain text in git, tight RBAC, and encryption at rest and in transit.
 OPTIONAL LIVE (30 seconds): create a fake secret in the demo namespace, decode it with base64 -d, delete it. Use a made-up value only.
