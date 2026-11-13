@@ -19,6 +19,11 @@
       "file": "deck-4-argo.html",
       "title": "Operations as code",
       "unlocked": true
+    },
+    {
+      "file": "deck-5-resilience.html",
+      "title": "Zero-downtime operations",
+      "unlocked": true
     }
   ]
 }

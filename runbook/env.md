@@ -24,3 +24,16 @@ Force Argo CD to look at git now (instead of waiting up to 3 minutes):
 ```sh
 kubectl -n argocd annotate application $ARGO_APP argocd.argoproj.io/refresh=hard --overwrite
 ```
+
+Promote a canary that is paused at 50% (what the Argo Rollouts plugin does, without needing the plugin):
+
+```sh
+kubectl -n $NS patch rollout podinfo --type merge --subresource status -p '{"status":{"pauseConditions":null}}'
+```
+
+Measure availability on the public URL while a scene runs (writes `epoch status` every ~0.25s):
+
+```sh
+end=$(( $(date +%s) + 60 )); while [ $(date +%s) -lt $end ]; do echo "$(date +%s) $(curl -s -o /dev/null -m 3 -w '%{http_code}' $SITE/api/)"; sleep 0.25; done > /tmp/probe.log
+awk '$2!=200{n++} {t++} END{print t" probes, "n+0" failed"}' /tmp/probe.log
+```

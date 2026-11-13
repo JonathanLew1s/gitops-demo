@@ -8,12 +8,14 @@ reset: none (Argo CD reverts it itself)
 
 # Edit production by hand and watch it get reverted
 
+Rehearsed: Argo CD reverted the change in about 3 seconds. That is too fast to see the status flip on a dashboard, so the evidence is the events and the pods.
+
 ## Preconditions
 ```sh
-kubectl -n $NS get deploy web -o jsonpath='{.spec.replicas}{"\n"}'   # note it; the scene expects 1
-kubectl -n $NS get rollout podinfo -o jsonpath='{.status.phase}{"\n"}'   # Healthy (no rollout in progress)
+kubectl -n $NS get deploy web -o jsonpath='{.spec.replicas}{"\n"}'      # note it; the scene expects 1
+kubectl -n $NS get rollout podinfo -o jsonpath='{.status.phase}{"\n"}'  # Healthy (no rollout in progress)
 kubectl -n argocd get application $ARGO_APP -o jsonpath='{.status.sync.status}{"\n"}'   # Synced
-kubectl -n $NS describe resourcequota platform-quota | grep pods   # room for 5 more pods
+kubectl -n $NS describe resourcequota platform-quota | grep pods          # room for 4 more pods
 ```
 
 ## Say
@@ -22,12 +24,12 @@ kubectl -n $NS describe resourcequota platform-quota | grep pods   # room for 5 
 ## Do
 Advance one step per cue.
 1. `kubectl -n $NS scale deployment web --replicas=5` — "a quick manual fix"
-2. `kubectl -n $NS get pods -l app.kubernetes.io/name=web -w` (Ctrl-C after a few lines) — extra copies appear; point at the tiles on the lesson page
-3. `kubectl -n argocd get application $ARGO_APP` — "OutOfSync: git says 1, the cluster says 5"
-4. Wait. Self-heal restores git's value, usually within 10 to 30 seconds.
+2. Immediately: `kubectl -n $NS get pods -l app.kubernetes.io/name=web` — extra pods are being created
+3. `kubectl -n argocd get events --field-selector involvedObject.name=$ARGO_APP --sort-by=.lastTimestamp | tail -6` — read out: "Synced → OutOfSync … Initiated automated sync … OutOfSync → Synced". "Git says 1. The cluster said 5. The platform put it back."
+4. `kubectl -n $NS get pods -l app.kubernetes.io/name=web` — back to one (the extras are terminating)
 
 ## See
-Extra pod tiles appear on the lesson page, then disappear. Argo CD shows OutOfSync, then Synced.
+Terminal only: extra pods appear, then terminate; the event list tells the story. (Web pods are not tiles on the lesson page, so do not wait for tiles.)
 
 ## Check
 ```sh
