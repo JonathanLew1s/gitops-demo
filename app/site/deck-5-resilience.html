@@ -5,7 +5,7 @@
   <aside class="notes">SAY: this is the part that matters most for operations. Not "can it be done", but "what happens to users while we do it?". We measure that on the live site.</aside>
 </section>
 
-<section class="slide" data-id="single-copy" data-part="Zero-downtime operations" data-scene="resilience" data-steps="5">
+<section class="slide" data-id="single-copy" data-part="Zero-downtime operations" data-scene="resilience" data-steps="5" data-live='["One backend copy is crashed: watch the availability bar turn red", "A pull request asks for two copies", "Reviewers: approve", "One copy is crashed again: the bar stays green"]'>
   <div class="part">Part 5 · <span class="live-badge">LIVE</span> Resilience</div>
   <h2>One copy is a single point of failure</h2>
   <div class="term">
@@ -42,7 +42,7 @@ IF ASKED why a normal delete shows nothing: a graceful delete lets the old copy 
   <aside class="notes">SAY: this is the difference between "deploy and hope" and "deploy and know". The new version proves itself on a small share before it gets everyone.</aside>
 </section>
 
-<section class="slide" data-id="canary-upgrade" data-part="Zero-downtime operations" data-scene="canary-upgrade" data-steps="5">
+<section class="slide" data-id="canary-upgrade" data-part="Zero-downtime operations" data-scene="canary-upgrade" data-steps="5" data-live='["A pull request upgrades the vulnerable version", "Reviewers: approve", "Half the traffic moves to the new version while robots test it", "Two tabs, two versions, one site", "Promoted to 100%: no downtime"]'>
   <div class="part">Part 5 · <span class="live-badge">LIVE</span> Upgrade</div>
   <h2>Replace the vulnerable version, live</h2>
   <div class="term">
@@ -59,7 +59,7 @@ REHEARSED: whole upgrade, 304 probes of the public URL, 0 failed.
 SECURITY ANGLE: the old version is the one with known vulnerabilities; the fix is a three-line, reviewed, reversible change.</aside>
 </section>
 
-<section class="slide" data-id="bad-release" data-part="Zero-downtime operations" data-scene="bad-release" data-steps="5">
+<section class="slide" data-id="bad-release" data-part="Zero-downtime operations" data-scene="bad-release" data-steps="5" data-live='["A release with a hidden bug opens as a pull request: the manifest checks pass", "Reviewers: approve (could you tell?)", "Live tests catch the problem and stop the rollout", "Users stay on the good version", "A reviewed revert rolls it back"]'>
   <div class="part">Part 5 · <span class="live-badge">LIVE</span> When a release is bad</div>
   <h2>The platform stops it, then we undo it</h2>
   <div class="term">
@@ -94,7 +94,7 @@ KEY POINT: we made the test strict. By default the tool tolerates a few errors i
   <aside class="notes">SAY: more to think about up front. In operation: less downtime, calmer changes, and an audit trail of every one.</aside>
 </section>
 
-<section class="slide" data-id="expose" data-part="Zero-downtime operations" data-scene="expose-service" data-steps="4">
+<section class="slide" data-id="expose" data-part="Zero-downtime operations" data-scene="expose-service" data-steps="4" data-live='["Today the service has no address outside the cluster", "A pull request adds the route", "The presenter runs the tunnel and DNS step", "Open the public address and look at the certificate"]'>
   <div class="part">Part 5 · <span class="live-badge">LIVE</span> Service exposure</div>
   <h2>Opening a door to the internet, on purpose</h2>
   <div class="places" data-cur-group>
