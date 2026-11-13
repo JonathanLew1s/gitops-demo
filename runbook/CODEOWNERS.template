@@ -1,0 +1,4 @@
+# Who must review changes. Owners need write access to the repository or this is ignored.
+# The ruleset requires 2 approvals (required_approving_review_count in ruleset.json).
+# The author of a pull request can never approve their own change.
+* @REVIEWER_ONE @REVIEWER_TWO
