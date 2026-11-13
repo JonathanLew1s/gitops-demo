@@ -39,16 +39,16 @@ spec:
       containers:
         - name: podinfo
           # Deliberately old: patched live during the GitOps chapter.
-          image: ghcr.io/stefanprodan/podinfo:6.5.0
+          image: ghcr.io/stefanprodan/podinfo:6.9.4
           command:
             - ./podinfo
             - --port=9898
             - --level=info
           env:
             - name: PODINFO_UI_COLOR
-              value: "#c0392b"
+              value: "#27ae60"
             - name: PODINFO_UI_MESSAGE
-              value: "v1: running, but out of date"
+              value: "v2: patched and up to date"
           ports:
             - name: http
               containerPort: 9898
