@@ -7,27 +7,30 @@ metadata:
 spec:
   metrics:
     - name: canary-healthy
-      interval: 5s
-      count: 4
+      interval: 4s
+      count: 5
       failureLimit: 0
+      consecutiveErrorLimit: 0   # any error response fails the test (the default tolerates 4 in a row)
       successCondition: result == "OK"
       provider:
         web:
           url: http://podinfo-canary.gitops-demo.svc.cluster.local:9898/healthz
           jsonPath: "{$.status}"
     - name: canary-ready
-      interval: 5s
-      count: 4
+      interval: 4s
+      count: 5
       failureLimit: 0
+      consecutiveErrorLimit: 0   # any error response fails the test (the default tolerates 4 in a row)
       successCondition: result == "OK"
       provider:
         web:
           url: http://podinfo-canary.gitops-demo.svc.cluster.local:9898/readyz
           jsonPath: "{$.status}"
     - name: canary-serves-page
-      interval: 5s
-      count: 4
+      interval: 4s
+      count: 5
       failureLimit: 0
+      consecutiveErrorLimit: 0   # any error response fails the test (the default tolerates 4 in a row)
       successCondition: result != ""
       provider:
         web:
