@@ -143,9 +143,13 @@ function render() {
   if (s.dataset.scene) {
     const id = s.dataset.scene;
     sc.hidden = false;
-    sc.innerHTML = `<span class="live-badge">LIVE</span> <b>${esc(id)}</b> <button id="copycue" title="Copy the cue (S)">Copy cue</button> <a href="${REPO}/blob/main/runbook/scenes/${esc(id)}.md" target="_blank" rel="noopener">Open the instructions</a><div class="cuetext mono">${esc(cue(id))}</div>`;
+    let live = []; try { live = JSON.parse(s.dataset.live || '[]'); } catch (e) { /* ignore */ }
+    const steps = live.length ? `<ol class="livesteps">${live.map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : '';
+    sc.className = live.length ? 'big' : '';
+    sc.innerHTML = `<span class="live-badge">LIVE</span> <b>${esc(id)}</b> <button id="copycue" title="Copy the cue (S)">Copy cue</button> <a href="${REPO}/blob/main/runbook/scenes/${esc(id)}.md" target="_blank" rel="noopener">Open the instructions</a>${steps}<div class="cuetext mono">Presenter, say to Claude: ${esc(cue(id))}</div>`;
+    document.body.classList.toggle('has-live', live.length > 0);
     $('#copycue').onclick = copyCue;
-  } else sc.hidden = true;
+  } else { sc.hidden = true; document.body.classList.remove('has-live'); }
   $('#bar-fill').style.width = ((idx + (maxStep(s) ? step / maxStep(s) : 1)) / slides.length * 100) + '%';
   $('#where').textContent = `${idx + 1} / ${slides.length} · ${s.dataset.part || ''}`;
   try { history.replaceState(null, '', '#' + s.dataset.id); } catch (e) { /* ignore */ }

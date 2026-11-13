@@ -111,3 +111,9 @@ table.cmp th.then { color: var(--dim); } table.cmp th.now { color: var(--ok); }
 .turn ol { margin: 1vh 0 0 1.2em; padding: 0; }
 .turn li { margin: 1vh 0; }
 .cols > div > .card + .card { margin-top: 1.2vh; }
+
+/* live slides: the steps are on screen, so nobody has to be told what to do */
+#scene.big { left: 1.5vw; right: 1.5vw; max-width: none; border-width: 2px; padding: 1vh 1.4vw; font-size: clamp(.9rem, 1.5vw, 1.3rem); }
+#scene .livesteps { margin: .5vh 0 0 1.2em; padding: 0; columns: 2; column-gap: 2vw; }
+#scene .livesteps li { break-inside: avoid; margin: .2vh 0; }
+body.has-live .slide { padding-bottom: 24vh; }
