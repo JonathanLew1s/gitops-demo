@@ -1,0 +1,122 @@
+<section class="slide title" data-id="ops-title" data-part="Operations as code">
+  <div class="part">Part 4</div>
+  <h2>Operations as code</h2>
+  <p class="sub">The tool that watches git, compares it with reality, and keeps them the same. And what happens when things break.</p>
+  <aside class="notes">SAY: Kubernetes is the engine. Argo CD is the driver that takes instructions from git. Together: infrastructure as code becomes operations as code.</aside>
+</section>
+
+<section class="slide" data-id="legacy-modern" data-part="Operations as code" data-steps="6">
+  <div class="part">Part 4 · The mindset shift</div>
+  <h2>From legacy operations to operations as code</h2>
+  <table class="cmp">
+    <tr><th></th><th>Legacy</th><th>Operations as code</th></tr>
+    <tr data-show="1"><td><b>Making a change</b></td><td>Ticket, change window, someone logs in</td><td>A pull request, reviewed and merged</td></tr>
+    <tr data-show="2"><td><b>Who touches production</b></td><td>Many people with admin access</td><td>Nobody by hand: the platform applies approved changes</td></tr>
+    <tr data-show="3"><td><b>What is running?</b></td><td>"Ask Dave." Check the server.</td><td>Read the repository. It is the answer.</td></tr>
+    <tr data-show="4"><td><b>Rolling back</b></td><td>Panic, restore, hope</td><td>Revert the commit. Same process, same gates.</td></tr>
+    <tr data-show="5"><td><b>A new environment</b></td><td>Weeks of build and checklists</td><td>Point the platform at the same repo</td></tr>
+    <tr data-show="6"><td><b>Audit trail</b></td><td>Spreadsheets and memory</td><td>Every change: who, when, why, approved by whom</td></tr>
+  </table>
+  <aside class="notes">SAY: more to think about up front, far less in operation. That is the pitch.
+ASK: which row hurts most today?</aside>
+</section>
+
+<section class="slide" data-id="argo-loop" data-part="Operations as code" data-steps="4">
+  <div class="part">Part 4 · Argo CD</div>
+  <h2>Argo CD: the thermostat for your platform</h2>
+  <div class="triad" data-cur-group>
+    <div class="card" data-show="1" style="border-color:var(--accent)"><h4>Git</h4><p>what we <b>want</b></p></div>
+    <div class="arrow" data-show="2">⇄</div>
+    <div class="card" data-show="2" style="border-color:var(--warn)"><h4>Argo CD</h4><p>compares the two</p></div>
+    <div class="arrow" data-show="3">⇄</div>
+    <div class="card" data-show="3" style="border-color:var(--ok)"><h4>Cluster</h4><p>what we <b>have</b></p></div>
+  </div>
+  <p class="cap" data-caps='["","Git holds the wanted state: versions, copies, settings.","Argo CD watches git and the cluster, continuously.","When they differ, it changes the cluster to match git. Never the other way around.","Three verbs: watch, compare, reconcile. That is the entire job."]'></p>
+  <div class="onsite"><b>On this site:</b> Argo CD is watching a public GitHub repository. Merge a change and the page changes, with nobody logging into a server.</div>
+  <aside class="notes">SAY: the key direction: git is the boss. If the cluster disagrees, the cluster is wrong.
+OPTIONAL: open the Argo CD UI on the tailnet and show the gitops-demo app tree.</aside>
+</section>
+
+<section class="slide" data-id="argo-status" data-part="Operations as code" data-steps="4">
+  <div class="part">Part 4 · Argo CD</div>
+  <h2>Reading the dashboard: two questions</h2>
+  <div class="cols">
+    <div class="card"><h4>1. Does it match git?</h4>
+      <p data-show="1"><span class="pill ok">Synced</span> running what git says</p>
+      <p data-show="2"><span class="pill warn">OutOfSync</span> git and cluster differ (a change is pending, or someone edited by hand)</p></div>
+    <div class="card"><h4>2. Is it working?</h4>
+      <p data-show="3"><span class="pill ok">Healthy</span> all copies up, checks passing &nbsp; <span class="pill dim">Progressing</span> rolling out now</p>
+      <p data-show="4"><span class="pill bad">Degraded</span> something is wrong, with the reason attached</p></div>
+  </div>
+  <p class="sub">Two independent answers. "Synced but Degraded" means we shipped exactly what we meant to, and it is broken.</p>
+  <aside class="notes">SAY: this is the one view an on-call person needs. Match and health are separate questions, and git can only fix the first.</aside>
+</section>
+
+<section class="slide" data-id="live-drift" data-part="Operations as code" data-steps="3">
+  <div class="part">Part 4 · <span class="live-badge">LIVE</span> Drift</div>
+  <h2>Someone edits production by hand…</h2>
+  <div class="term">
+    <div data-show="0"><span class="p">$</span> kubectl -n gitops-demo scale deployment web --replicas=5   <span class="c"># a well-meaning quick fix</span></div>
+    <div data-show="1"><span class="c"># watch the pod tiles: 5 appear…</span></div>
+    <div data-show="2"><span class="c"># Argo CD: OutOfSync. Git says 2. Self-heal kicks in…</span></div>
+    <div data-show="3"><span class="c"># …and the count returns to what git says.</span></div>
+  </div>
+  <div class="cols"><div class="card" data-show="3"><h4>The lesson</h4><p>A hand edit doesn't survive. If a change matters, it must go through git, where it is reviewed and recorded. Production can't quietly drift from the record.</p></div></div>
+  <aside class="notes">CHAT CUE: "Claude, run the drift scene: scale web by hand, then show Argo reverting it."
+PLAN B: if Argo is slow, hard-refresh: kubectl -n argocd annotate application gitops-demo argocd.argoproj.io/refresh=hard
+SECURITY ANGLE: this is also a control against unreviewed changes, malicious or well-meant.</aside>
+</section>
+
+<section class="slide" data-id="breaks" data-part="Operations as code" data-steps="8">
+  <div class="part">Part 4 · What happens when it breaks?</div>
+  <h2>Failure is normal. The design expects it.</h2>
+  <table class="cmp">
+    <tr><th>What breaks</th><th>What happens</th></tr>
+    <tr data-show="1"><td><b>A pod crashes</b></td><td>Replaced within seconds. With 2+ copies nobody notices.</td></tr>
+    <tr data-show="2"><td><b>A server dies</b></td><td>Its pods restart on other servers. The cluster heals itself.</td></tr>
+    <tr data-show="3"><td><b>A bad change is merged</b></td><td>New copies fail their health checks, so old ones keep serving. Fix: revert the commit.</td></tr>
+    <tr data-show="4"><td><b>A canary fails its tests</b></td><td>The rollout aborts automatically. Users stay on the old version.</td></tr>
+    <tr data-show="5"><td><b>Argo CD is down</b></td><td>Everything keeps running. Only <i>changes</i> pause until it returns.</td></tr>
+    <tr data-show="6"><td><b>GitHub is down</b></td><td>Same: running apps are unaffected. We just can't ship for a while.</td></tr>
+    <tr data-show="7"><td><b>Someone edits prod by hand</b></td><td>Reverted automatically, and visible as drift.</td></tr>
+    <tr data-show="8"><td><b>The whole cluster is lost</b></td><td>Rebuild from git. <b>Data</b> comes back from backups. That is why we back up.</td></tr>
+  </table>
+  <aside class="notes">SAY: the control plane is separate from the workload. Argo or GitHub being down is an inconvenience, not an outage.
+ASK THE ROOM: which of these rows would be a P1 incident for you today?</aside>
+</section>
+
+<section class="slide" data-id="security-view" data-part="Operations as code" data-steps="4">
+  <div class="part">Part 4 · For the security team</div>
+  <h2>Approved, visible, controlled</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Approved</h4><p>Every change is a pull request. Required checks, required reviewer, and the author can't approve their own.</p></div>
+    <div class="card" data-show="2"><h4>Least privilege</h4><p>People don't hold production credentials. The platform applies approved changes, and its reach is limited to one namespace.</p></div>
+    <div class="card" data-show="3"><h4>Visible</h4><p>The components table on the lesson page shows what is running and its scan status. Out of date is red, patched is green.</p></div>
+    <div class="card" data-show="4"><h4>Reversible</h4><p>Rollback is a reviewed commit. Disaster recovery is "rebuild from git, restore the data".</p></div>
+  </div>
+  <aside class="notes">SAY: the point for security is not a new tool, it is that the control is in the workflow. You can't skip the review, because the review is how it deploys.</aside>
+</section>
+
+<section class="slide" data-id="whats-next" data-part="Operations as code" data-steps="3">
+  <div class="part">Part 4 · A glimpse beyond today</div>
+  <h2>Next: seeing <i>inside</i></h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Metrics</h4><p>Vital signs over time: CPU, memory, requests per second, error rate. (Prometheus, Grafana)</p></div>
+    <div class="card" data-show="2"><h4>Logs and traces</h4><p>The diary of what each part did, and the path of a single request across services. (Loki, Tempo)</p></div>
+    <div class="card" data-show="3"><h4>Alerts</h4><p>Be told about a problem before a user is. Then roll back with a commit.</p></div>
+  </div>
+  <p class="sub">Not today. They are deployed the same way: from git, reviewed, reversible. They answer <b>why</b>, not just <b>what</b>.</p>
+  <aside class="notes">SAY: we stop here on purpose. Observability is a session of its own. Everything we saw today (the page, the availability bar, Argo's health) is the beginner version.</aside>
+</section>
+
+<section class="slide" data-id="mindset" data-part="Operations as code" data-steps="3">
+  <div class="part">Part 4 · To take away</div>
+  <h2>Three ideas to remember</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>1. Write down what you want</h4><p>Infrastructure and its operations are text, in git, reviewed like anything else.</p></div>
+    <div class="card" data-show="2"><h4>2. Let a loop make it true</h4><p>A platform that continuously closes the gap between wanted and actual.</p></div>
+    <div class="card" data-show="3"><h4>3. Change is boring, on purpose</h4><p>Small, approved, reversible, with no downtime. That is the goal.</p></div>
+  </div>
+  <p class="sub">You don't have to adopt any of it tomorrow. Pick one small, boring thing and put it in git.</p>
+  <aside class="notes">CLOSE: invite questions. If time remains, open the side-quest menu (chaos, canary, break-it-and-fix-it).</aside>
+</section>

@@ -1,0 +1,132 @@
+<section class="slide title" data-id="title" data-part="Git">
+  <div class="part">Session · IT Infrastructure &amp; Security</div>
+  <h2>Git, GitOps &amp; Kubernetes:<br>see it, then believe it</h2>
+  <p class="sub">This page is running on Kubernetes right now. By the end of the session we will have changed it, upgraded it and rolled it back, live, without it ever going down.</p>
+  <aside class="notes">SAY: Nobody here needs to start using Git tomorrow. The goal is to see what is possible, so you can judge what modern infrastructure operations looks like.
+ASK THE ROOM: who has raised a change ticket for a firewall rule this month? Keep that in mind.
+CHAT CUE: none. Just open demo.instagib.co.uk on a second screen.</aside>
+</section>
+
+<section class="slide" data-id="problem" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git</div>
+  <h2>The question Git answers</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Before</h4><p class="mono">firewall_rules_FINAL_v2_REAL.xlsx</p><p>Emailed. Edited on a share. Nobody knows which copy is live.</p></div>
+    <div class="card" data-show="2"><h4>The audit question</h4><p>Who changed it? When? <b>Why?</b> And can we get back to how it was on Tuesday?</p></div>
+    <div class="card" data-show="3"><h4>With Git</h4><p>Every change is recorded with its author, time and reason, <b>forever</b>, and any earlier state can be restored in seconds.</p></div>
+  </div>
+  <aside class="notes">SAY: Git was built for source code, but it is really a tamper-evident log of changes to any text. Infrastructure is now text (YAML), so it applies directly.
+SECURITY ANGLE: "who, when, why" is the audit trail an auditor asks for. Git gives it by default.</aside>
+</section>
+
+<section class="slide" data-id="commit" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git</div>
+  <h2>A commit is a snapshot with a name tag</h2>
+  <div class="graph" data-ops='[[{"c":"first page"}],[{"c":"add title"}],[{"c":"fix typo"}],[{"push":true}]]'></div>
+  <p class="cap" data-caps='["First commit: the page exists.","Second commit. Each one points back at its parent.","Third commit. This chain is the history.","Pushed: a copy of the history now also lives on GitHub (origin)."]'></p>
+  <div class="cols">
+    <div class="card"><h4>Each commit stores</h4><ul><li>the snapshot of the files</li><li>author, time, message</li><li>the hash of its parent</li></ul></div>
+    <div class="card"><h4>Why security cares</h4><p>The hash covers the parent's hash, so history <b>cannot be quietly edited</b>. Change one old commit and every hash after it changes.</p></div>
+  </div>
+  <aside class="notes">SAY: the 7-character codes under each dot are the hash. Real ones are longer, these are illustrative.
+Press → to build the chain commit by commit.</aside>
+</section>
+
+<section class="slide" data-id="places" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git</div>
+  <h2>Four places your change lives</h2>
+  <div class="places" data-cur-group>
+    <div class="place" data-show="0"><div class="box">Working folder<small>files you edit</small></div></div>
+    <div class="arrow" data-show="1">→<code class="cmd">git add</code>pick what to include</div>
+    <div class="place" data-show="1"><div class="box">Staging<small>the next commit</small></div></div>
+    <div class="arrow" data-show="2">→<code class="cmd">git commit</code>save the snapshot</div>
+    <div class="place" data-show="2"><div class="box">Local history<small>on your laptop</small></div></div>
+    <div class="arrow" data-show="3">→<code class="cmd">git push</code>share it</div>
+    <div class="place" data-show="3"><div class="box">GitHub<small>the shared remote</small></div></div>
+  </div>
+  <p class="cap" data-caps='["You edit files, nothing is recorded yet.","Staging: choose exactly which edits belong together.","Commit: a permanent, named snapshot, still only on your machine.","Push: the team (and the pipeline) can now see it. git pull brings others’ work the other way."]'></p>
+  <aside class="notes">SAY: add, commit and push are three deliberate steps. That deliberateness is what makes changes reviewable.
+CHAT CUE (next slide is live): "Claude, run the sandbox git demo".</aside>
+</section>
+
+<section class="slide" data-id="live-sandbox" data-part="Git" data-steps="4">
+  <div class="part">Part 1 · Git · <span class="live-badge">LIVE</span></div>
+  <h2>Your first commit, for real</h2>
+  <div class="term">
+    <div data-show="0"><span class="p">$</span> git init demo &amp;&amp; cd demo   <span class="c"># a new, empty history</span></div>
+    <div data-show="1"><span class="p">$</span> echo "hello" &gt; notes.txt &amp;&amp; git status   <span class="c"># git sees an untracked file</span></div>
+    <div data-show="2"><span class="p">$</span> git add notes.txt &amp;&amp; git commit -m "first note"   <span class="c"># snapshot saved</span></div>
+    <div data-show="3"><span class="p">$</span> git log --oneline --graph   <span class="c"># the history, with hashes</span></div>
+    <div data-show="4"><span class="p">$</span> git diff HEAD~1   <span class="c"># exactly what changed, and who did it</span></div>
+  </div>
+  <p class="sub">Watch the terminal. This is a throwaway sandbox, not the demo site.</p>
+  <aside class="notes">CHAT CUE: "Claude, run the sandbox git demo, one command per step, and explain each output." Run in a scratch folder, not in the demo repo. After step 4, edit the file again and show `git diff` before committing.</aside>
+</section>
+
+<section class="slide" data-id="branch" data-part="Git" data-steps="4">
+  <div class="part">Part 1 · Git</div>
+  <h2>Branch: a safe draft</h2>
+  <div class="graph" data-ops='[[{"c":"v1"},{"c":"v2"}],[{"b":"new-headline"}],[{"c":"edit"}],[{"c":"edit 2"}],[{"co":"main"}]]'></div>
+  <p class="cap" data-caps='["main is what is running in production.","A branch is just a new label on the same commit. Free, instant.","Work happens on the branch. main is untouched.","Several commits later, still nothing live has changed.","Switch back: main is exactly as it was. The draft waits safely."]'></p>
+  <div class="cols"><div class="card"><h4>Think of it as</h4><p>A copy of the whole system you can break freely, without a change window.</p></div></div>
+  <aside class="notes">SAY: this is the idea that makes change safe. You never edit production; you propose a branch.
+HEAD is "where you are standing right now".</aside>
+</section>
+
+<section class="slide" data-id="merge" data-part="Git" data-steps="6">
+  <div class="part">Part 1 · Git</div>
+  <h2>Pull request: ask before you merge</h2>
+  <div class="graph" data-ops='[[{"c":"v1"},{"c":"v2"}],[{"b":"new-headline"}],[{"c":"edit"}],[{"c":"edit 2"},{"push":true}],[{"co":"main"}],[{"m":"new-headline"}],[{"push":true}]]'></div>
+  <p class="cap" data-caps='["Same starting point.","Branch created.","Work on the branch.","Pushed to GitHub: now we can open a pull request.","Back on main, the proposal is reviewed…","…and merged. The change is now part of main.","Pushed. main is what the platform deploys."]'></p>
+  <div class="cols">
+    <div class="card"><h4>A pull request is</h4><ul><li>a proposal to merge</li><li>a conversation about the change</li><li>a gate: checks must pass, people must approve</li></ul></div>
+    <div class="card"><h4>In this demo</h4><ul><li>automated check: <code class="cmd">validate-manifests</code></li><li>a security reviewer must approve</li><li>the author <b>cannot</b> approve their own</li></ul></div>
+  </div>
+  <aside class="notes">SAY: this slide is the change-approval process, in the open. The ticket, the CAB and the audit log are all the same object.
+We will add the approvers' GitHub accounts live later and they will approve a real one.</aside>
+</section>
+
+<section class="slide" data-id="pullpush" data-part="Git" data-steps="4">
+  <div class="part">Part 1 · Git</div>
+  <h2>Pull &amp; push: working as a team</h2>
+  <div class="graph" data-ops='[[{"c":"v1"},{"c":"v2"},{"push":true}],[{"rc":"main","label":"colleague"}],[{"pull":true}],[{"c":"mine"}],[{"push":true}]]'></div>
+  <p class="cap" data-caps='["You and GitHub agree: same history.","A colleague pushed a commit. GitHub has it, you do not (dashed).","git pull: your copy catches up.","Now your change builds on theirs.","git push: shared again. No emailed files, no overwritten work."]'></p>
+  <aside class="notes">SAY: dashed means "exists on the remote, not on my machine yet". Pull before you push is the daily rhythm.</aside>
+</section>
+
+<section class="slide" data-id="worktree" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git</div>
+  <h2>Worktree: two branches, two folders, one repo</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4 class="mono">~/gitops-demo</h4><p>branch <code class="cmd">main</code></p><p>The application repo.</p></div>
+    <div class="card" data-show="2"><h4 class="mono">~/talos-gitops-demo</h4><p>branch <code class="cmd">codex/gitops-demo-rollouts</code></p><p>A second checkout of the <i>platform</i> repo, so a platform fix never mixes with other work in progress.</p></div>
+    <div class="card" data-show="3"><h4>One shared history</h4><p>Both folders use the same <code class="cmd">.git</code> store. Commits made in either are visible to both. No stashing, no half-finished edits to juggle.</p></div>
+  </div>
+  <p class="sub" data-show="3">Used for real during the building of this demo: one session, two repos, parallel pull requests.</p>
+  <aside class="notes">SAY: you do not need worktrees on day one. They matter when you juggle several urgent changes: one folder per piece of work.
+SHOW: `git worktree list` in the terminal.</aside>
+</section>
+
+<section class="slide" data-id="undo" data-part="Git" data-steps="4">
+  <div class="part">Part 1 · Git</div>
+  <h2>Undo is a new commit, not an eraser</h2>
+  <div class="graph" data-ops='[[{"c":"good"},{"c":"good 2"}],[{"c":"bad change"}],[{"push":true}],[{"revert":true}],[{"push":true}]]'></div>
+  <p class="cap" data-caps='["A healthy history.","Someone merges a bad change.","It is live. Now what?","git revert: a new commit that undoes it. The bad commit stays in the record.","Pushed. Rolled back, with a full audit trail of what happened and when."]'></p>
+  <div class="cols"><div class="card"><h4>Why this matters</h4><p>Rollback is a normal, reviewed, recorded change. Later, we will do it with the platform watching and the website never going down.</p></div></div>
+  <aside class="notes">SAY: in many shops rollback is a panic. Here it is a commit like any other, and it goes through the same gates unless you choose otherwise.</aside>
+</section>
+
+<section class="slide" data-id="cheatsheet" data-part="Git" data-steps="1">
+  <div class="part">Part 1 · Git</div>
+  <h2>Cheat sheet</h2>
+  <table class="cmp">
+    <tr><th>Command</th><th>Plain English</th></tr>
+    <tr><td><code class="cmd">git status</code></td><td>What has changed since the last commit?</td></tr>
+    <tr><td><code class="cmd">git add</code> / <code class="cmd">git commit</code></td><td>Choose edits, then save them as a named snapshot</td></tr>
+    <tr><td><code class="cmd">git branch</code> / <code class="cmd">git switch</code></td><td>Start or move between safe drafts</td></tr>
+    <tr data-show="1"><td><code class="cmd">git push</code> / <code class="cmd">git pull</code></td><td>Share my work / get everyone else's</td></tr>
+    <tr data-show="1"><td><code class="cmd">git log</code> / <code class="cmd">git diff</code></td><td>The history, and exactly what changed</td></tr>
+    <tr data-show="1"><td><code class="cmd">git revert</code></td><td>Undo a change by adding a new one</td></tr>
+  </table>
+  <aside class="notes">SAY: this is a take-away. Everything else is a variation. Next: how a change travels from an idea to the live system.</aside>
+</section>

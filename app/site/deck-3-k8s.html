@@ -1,0 +1,157 @@
+<section class="slide title" data-id="k8s-title" data-part="Kubernetes">
+  <div class="part">Part 3</div>
+  <h2>Kubernetes in plain English</h2>
+  <p class="sub">A team of tireless operators. You tell them what you want. They make it true, and keep it true.</p>
+  <aside class="notes">SAY: you do not need to learn a single command today. We are building a mental model, using a handful of words that you will hear a lot.
+TONE: no jargon police. If someone says "container" or "pod" loosely, that is fine.</aside>
+</section>
+
+<section class="slide" data-id="declare" data-part="Kubernetes" data-steps="3">
+  <div class="part">Part 3 · The big idea</div>
+  <h2>Declare what you want. Don't do the steps.</h2>
+  <div class="legacy-modern">
+    <div class="lm-col legacy" data-show="1"><h4>Legacy: do the steps</h4><div class="card"><p>Log in to the server. Stop the service. Copy files. Edit the config. Start it. Hope.</p><p><i>"It works if you do it in the right order, and Dave is the one who knows the order."</i></p></div></div>
+    <div class="lm-col modern" data-show="2"><h4>Modern: declare the result</h4><div class="card"><p><b>"I want 3 copies of version 2, with this much memory."</b></p><p>A controller compares that to reality, every few seconds, and fixes any difference.</p></div></div>
+  </div>
+  <div class="onsite" data-show="3"><b>Like a thermostat.</b> You set 21°. You never decide when the heating turns on. That is the whole of Kubernetes, and of GitOps.</div>
+  <aside class="notes">SAY: this is the single most important slide. Everything after it is detail. "Desired state" versus "actual state", and a loop that closes the gap.
+INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIONS AS CODE: the procedures too (upgrade, rollback, scale, restore) become changes to that file.</aside>
+</section>
+
+<section class="slide" data-id="cluster-node" data-part="Kubernetes" data-steps="3">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Cluster and node</h2>
+  <div class="nest" data-cur-group>
+    <div class="nest-label" data-show="1">Cluster: all the servers acting as one big computer</div>
+    <div class="nnode" data-show="2"><div class="nest-label">Node: one server</div></div>
+    <div class="nnode" data-show="2"><div class="nest-label">Node: another server</div></div>
+    <div class="nnode" data-show="2"><div class="nest-label">Node: another server</div></div>
+    <div class="nnode" data-show="2"><div class="nest-label">Node: another server</div></div>
+  </div>
+  <p class="cap" data-caps='["","The cluster is the whole data centre, treated as a single pool of computing power.","Nodes are the individual servers. You rarely care which one runs what: the cluster decides.","Add a node and the capacity grows. Lose a node and the work moves. Nobody gets paged to move it by hand."]'></p>
+  <div class="onsite" data-show="3"><b>On this site:</b> 4 small machines (3 Intel, 1 ARM Mac mini) form the cluster. Same idea whether it's 4 servers or 400.</div>
+  <aside class="notes">SAY: avoid "control plane vs worker" unless asked. A node is a server. A cluster is the group.</aside>
+</section>
+
+<section class="slide" data-id="pod" data-part="Kubernetes" data-steps="3">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Pod: one running copy of an app</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Container</h4><p>The app plus everything it needs, sealed in one package. It runs the same on a laptop, in test and in production.</p></div>
+    <div class="card" data-show="2"><h4>Pod</h4><p>A running container (or two that work together). The smallest thing Kubernetes runs.</p></div>
+    <div class="card" data-show="3"><h4>Disposable, by design</h4><p>A sick pod is not repaired. It is <b>replaced</b>. We treat them as cattle, not pets.</p></div>
+  </div>
+  <div class="onsite"><b>On this site:</b> the tiles at the top of the lesson page are real pods. Each name is a different running copy.</div>
+  <aside class="notes">SAY: "cattle not pets" is the mindset shift in two words. Nobody logs in to fix a pod; it is just replaced with a fresh one.</aside>
+</section>
+
+<section class="slide" data-id="replicas" data-part="Kubernetes" data-steps="4">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Replicas: how many copies?</h2>
+  <div class="nest" style="min-height:14vh">
+    <div class="nest-label">Wanted: 3 copies</div>
+    <div class="kpod">1</div>
+    <div class="kpod" data-at='{"2":"gone","3":"new"}'>2</div>
+    <div class="kpod">3</div>
+  </div>
+  <p class="cap" data-caps='["The instruction (a Deployment) says: keep 3 identical copies of version 2 running.","A supervisor, the ReplicaSet, counts them continuously.","One copy crashes. The count is now 2, not 3.","The supervisor starts a replacement within seconds. Nobody was paged.","Want more? Change 3 to 5. The same supervisor does the rest."]'></p>
+  <div class="cols">
+    <div class="card"><h4>Deployment</h4><p>"I want N copies of this version." The instruction.</p></div>
+    <div class="card"><h4>ReplicaSet</h4><p>The supervisor that keeps the headcount right.</p></div>
+    <div class="card"><h4>Replicas</h4><p>The identical copies. More than one means no single point of failure.</p></div>
+  </div>
+  <aside class="notes">SAY: we will do this live: kill a pod when there is one copy (outage), then two copies (nothing visible). The availability bar on the lesson page shows it.</aside>
+</section>
+
+<section class="slide" data-id="namespace" data-part="Kubernetes" data-steps="3">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Namespace: a department's floor</h2>
+  <div class="cols">
+    <div class="card" data-show="1" style="border-color:var(--accent)"><h4>finance</h4><p>its own apps, budget and rules</p></div>
+    <div class="card" data-show="1" style="border-color:var(--ok)"><h4>security-tools</h4><p>separate from everyone else</p></div>
+    <div class="card" data-show="1" style="border-color:var(--warn)"><h4 class="mono">gitops-demo</h4><p>this demo, and nothing else</p></div>
+  </div>
+  <p class="cap" data-caps='["","Same cluster, separate spaces. Teams share the hardware but not each other’s things.","Each namespace has its own quota (a capacity budget) and its own permissions.","Delete a namespace and everything inside goes with it. A clean way to tidy up."]'></p>
+  <div class="onsite" data-show="2"><b>On this site:</b> the platform team decides how many pods this namespace may run. The app team cannot raise it. We will test that.</div>
+  <aside class="notes">SAY: namespaces are how a shared platform stays safe: separate budgets, separate permissions, separate blast radius.</aside>
+</section>
+
+<section class="slide" data-id="service" data-part="Kubernetes" data-steps="2">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Service: one phone number, always answered</h2>
+  <div class="triad">
+    <div class="card" data-show="0"><h4>You</h4><p>always call the same address</p></div>
+    <div class="arrow">→</div>
+    <div class="card" data-show="1" style="border-color:var(--accent)"><h4>Service</h4><p>the front desk</p></div>
+    <div class="arrow" data-show="1">→</div>
+    <div class="card" data-show="2"><h4>Any healthy pod</h4><p>pods come and go behind it</p></div>
+  </div>
+  <div class="onsite"><b>On this site:</b> refresh the page. The pod name changes but the address never does. That is the Service sharing the work.</div>
+  <aside class="notes">SAY: pods are disposable, so their addresses change. The Service is the stable front door. Load balancing for free.</aside>
+</section>
+
+<section class="slide" data-id="storage" data-part="Kubernetes" data-steps="4">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Storage: pods die, data must not</h2>
+  <div class="places" data-cur-group>
+    <div class="place" data-show="0"><div class="box">Pod<small>disposable</small></div></div>
+    <div class="arrow" data-show="1">→<code class="cmd">PVC</code>the request slip</div>
+    <div class="place" data-show="1"><div class="box">"I need 10 GB, fast"<small>PersistentVolumeClaim</small></div></div>
+    <div class="arrow" data-show="2">→<code class="cmd">PV</code>the match</div>
+    <div class="place" data-show="2"><div class="box">A real disk<small>PersistentVolume</small></div></div>
+  </div>
+  <p class="cap" data-caps='["Everything inside a pod is lost when it is replaced.","So an app asks for storage with a request slip (a PVC): size and speed, not which disk.","The platform finds or creates a real disk (a PV) that fits and attaches it.","The pod can die and be replaced; the disk, and the data on it, stay.","Backups are separate: a disk can still be deleted by mistake or malice. Snapshots and off-site copies are the safety net."]'></p>
+  <div class="onsite" data-show="3"><b>Remember:</b> git restores the <i>configuration</i>. Only backups restore the <i>data</i>. We will do both live.</div>
+  <aside class="notes">SAY: PVC = request, PV = actual disk. That is all most people need. We will use Longhorn snapshots for the backup and restore scene.
+NOTE: Do not go into storage classes unless asked.</aside>
+</section>
+
+<section class="slide" data-id="secrets" data-part="Kubernetes" data-steps="3">
+  <div class="part">Part 3 · The building blocks</div>
+  <h2>Secrets: passwords are not config</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Settings</h4><p>Which colour, which message, how many copies. Fine to read in git.</p></div>
+    <div class="card" data-show="1" style="border-color:var(--bad)"><h4>Secrets</h4><p>Passwords, keys, tokens. <b>Never in git as plain text.</b></p></div>
+  </div>
+  <div class="card" data-show="2"><h4>Three common ways to keep them safe</h4>
+    <ul>
+      <li><b>Encrypt before committing.</b> The encrypted file lives in git; only the cluster can open it. (What this homelab uses.)</li>
+      <li><b>Fetch from a vault.</b> The app asks a secrets vault at runtime. Nothing is stored in git at all.</li>
+      <li><b>Tight access rules.</b> Only named people and systems may read a secret, and every read is logged.</li>
+    </ul></div>
+  <div class="onsite" data-show="3"><b>Heads up:</b> by default a Kubernetes Secret is <i>encoded</i>, not encrypted. Anyone allowed to read it can decode it in one command. So who may read is the real control.</div>
+  <aside class="notes">SAY: this one is for the security team. The model is: no secret in plain text in git, tight RBAC, and encryption at rest and in transit.
+OPTIONAL LIVE (30 seconds): create a fake secret in the demo namespace, decode it with base64 -d, delete it. Use a made-up value only.
+CHAT CUE: "Claude, show that a Secret is just base64, using a fake value, then delete it."</aside>
+</section>
+
+<section class="slide" data-id="glossary" data-part="Kubernetes" data-steps="8">
+  <div class="part">Part 3 · Recap</div>
+  <h2>The vocabulary, in one table</h2>
+  <table class="cmp">
+    <tr><th>Word</th><th>Plain English</th><th>On this site</th></tr>
+    <tr data-show="1"><td><b>Cluster</b></td><td>The whole data centre as one computer</td><td>4 small machines</td></tr>
+    <tr data-show="2"><td><b>Node</b></td><td>One server in it</td><td>the machines pods land on</td></tr>
+    <tr data-show="3"><td><b>Pod</b></td><td>One running copy of an app</td><td>the tiles on the page</td></tr>
+    <tr data-show="4"><td><b>Replicas / ReplicaSet</b></td><td>How many copies / the supervisor who keeps the count</td><td>1, then 2, then more</td></tr>
+    <tr data-show="5"><td><b>Namespace</b></td><td>A department's space, with its own budget and rules</td><td><span class="mono">gitops-demo</span></td></tr>
+    <tr data-show="6"><td><b>PVC / PV</b></td><td>The storage request / the real disk</td><td>the notes volume (backup scene)</td></tr>
+    <tr data-show="7"><td><b>Secret</b></td><td>A protected setting, never plain text in git</td><td>none in this public repo</td></tr>
+    <tr data-show="8"><td><b>Desired state</b></td><td>What we wrote down that we want</td><td>the files in git</td></tr>
+  </table>
+  <aside class="notes">SAY: if they leave remembering only "Deployment keeps N copies, Namespace is a department, PVC is a request slip", that is a win.</aside>
+</section>
+
+<section class="slide" data-id="live-see-it" data-part="Kubernetes" data-steps="4">
+  <div class="part">Part 3 · <span class="live-badge">LIVE</span></div>
+  <h2>See the real thing</h2>
+  <div class="term">
+    <div data-show="0"><span class="p">$</span> kubectl get nodes   <span class="c"># the servers (the cluster)</span></div>
+    <div data-show="1"><span class="p">$</span> kubectl -n gitops-demo get pods   <span class="c"># the running copies</span></div>
+    <div data-show="2"><span class="p">$</span> kubectl -n gitops-demo get replicasets   <span class="c"># the supervisor and its count</span></div>
+    <div data-show="3"><span class="p">$</span> kubectl -n gitops-demo get service   <span class="c"># the front desk</span></div>
+    <div data-show="4"><span class="p">$</span> kubectl -n gitops-demo describe resourcequota   <span class="c"># the department budget</span></div>
+  </div>
+  <p class="sub">Each answer matches a tile, a table or a bar on the lesson page.</p>
+  <aside class="notes">CHAT CUE: "Claude, run the see-it commands one at a time and explain each in one sentence." Only the gitops-demo namespace and the node list: never list other namespaces on screen.</aside>
+</section>
