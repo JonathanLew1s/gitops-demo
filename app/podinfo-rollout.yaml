@@ -57,6 +57,7 @@ spec:
             httpGet:
               path: /readyz
               port: http
+            initialDelaySeconds: 10   # a realistic warm-up: the app is not ready for 10s after it starts
             periodSeconds: 3
           livenessProbe:
             httpGet:
