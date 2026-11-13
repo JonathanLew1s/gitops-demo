@@ -46,6 +46,27 @@ ASK: where does that separation live in your world today?</aside>
 SECURITY ANGLE: the approver reviews a diff, a few lines of text, not a screenshot of a console.</aside>
 </section>
 
+<section class="slide" data-id="then-and-now" data-part="Life of a change" data-steps="8">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2>The same change, then and now</h2>
+  <p class="sub">Example: open a firewall port for a new service.</p>
+  <table class="cmp">
+    <tr><th></th><th class="then">Then: spreadsheet &amp; CAB</th><th class="now">Now: git &amp; Argo CD</th></tr>
+    <tr data-show="1"><td><b>Define</b></td><td class="then">Someone fills in a spreadsheet of rules</td><td class="now">Someone writes the rules as a small text file, on a branch</td></tr>
+    <tr data-show="2"><td><b>Ask</b></td><td class="then">Emailed to a colleague, who adds it to the CAB agenda</td><td class="now">A pull request: the right reviewers are asked automatically</td></tr>
+    <tr data-show="3"><td><b>Review</b></td><td class="then">CAB reads a summary and trusts it matches the spreadsheet</td><td class="now">Reviewers see the exact lines that will change. Checks run by themselves.</td></tr>
+    <tr data-show="4"><td><b>Approve</b></td><td class="then">Recorded in the CAB minutes</td><td class="now">Recorded on the request. The author cannot approve their own.</td></tr>
+    <tr data-show="5"><td><b>Schedule</b></td><td class="then">Wait for the change window</td><td class="now">Merge when approved, or on a schedule you choose</td></tr>
+    <tr data-show="6"><td><b>Implement</b></td><td class="then">An engineer retypes the rules by hand. Typos happen.</td><td class="now">Argo CD applies exactly what was approved. Nobody retypes anything.</td></tr>
+    <tr data-show="7"><td><b>Test</b></td><td class="then">A second person checks afterwards</td><td class="now">Automated tests first; a canary takes a share of traffic before everyone</td></tr>
+    <tr data-show="8"><td><b>Back out</b></td><td class="then">Rollback plan, or an emergency change</td><td class="now">Revert the commit. Emergency is the same path, just faster, still recorded.</td></tr>
+  </table>
+  <p class="tagline" data-show="8">Same process. Different tool: automated, controlled, and what was approved is exactly what is applied.</p>
+  <aside class="notes">SAY: nothing about governance goes away. The CAB, the approval, the test and the rollback plan are all still there. What goes away is the retyping, the waiting and the "did it match what we approved?" doubt.
+ASK THE ROOM: how often has a change gone wrong because of a typo or a missed step, and not a bad design?
+KEY POINT: the thing that was reviewed is byte-for-byte the thing that was applied.</aside>
+</section>
+
 <section class="slide" data-id="live-unlock" data-part="Life of a change" data-steps="3">
   <div class="part">Part 2 · Life of a change · <span class="live-badge">LIVE</span></div>
   <h2>Do it for real: unlock the next chapter</h2>

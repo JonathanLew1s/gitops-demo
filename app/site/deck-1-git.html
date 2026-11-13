@@ -28,6 +28,7 @@ SECURITY ANGLE: "who, when, why" is the audit trail an auditor asks for. Git giv
     <div class="card"><h4>Each commit stores</h4><ul><li>the snapshot of the files</li><li>author, time, message</li><li>the hash of its parent</li></ul></div>
     <div class="card"><h4>Why security cares</h4><p>The hash covers the parent's hash, so history <b>cannot be quietly edited</b>. Change one old commit and every hash after it changes.</p></div>
   </div>
+  <div class="iaas"><b>In the VM world</b>A spreadsheet saved as <i>rules_v7.xlsx</i>, but every version kept, labelled, and impossible to quietly alter.</div>
   <aside class="notes">SAY: the 7-character codes under each dot are the hash. Real ones are longer, these are illustrative.
 Press → to build the chain commit by commit.</aside>
 </section>
@@ -45,6 +46,7 @@ Press → to build the chain commit by commit.</aside>
     <div class="place" data-show="3"><div class="box">GitHub<small>the shared remote</small></div></div>
   </div>
   <p class="cap" data-caps='["You edit files, nothing is recorded yet.","Staging: choose exactly which edits belong together.","Commit: a permanent, named snapshot, still only on your machine.","Push: the team (and the pipeline) can now see it. git pull brings others’ work the other way."]'></p>
+  <div class="iaas"><b>In the VM world</b>Edit the spreadsheet, save it, email it, put it on the share. Same four steps, each one now recorded.</div>
   <aside class="notes">SAY: add, commit and push are three deliberate steps. That deliberateness is what makes changes reviewable.
 CHAT CUE (next slide is live): "Claude, run the sandbox git demo".</aside>
 </section>
@@ -69,6 +71,7 @@ CHAT CUE (next slide is live): "Claude, run the sandbox git demo".</aside>
   <div class="graph" data-ops='[[{"c":"v1"},{"c":"v2"}],[{"b":"new-headline"}],[{"c":"edit"}],[{"c":"edit 2"}],[{"co":"main"}]]'></div>
   <p class="cap" data-caps='["main is what is running in production.","A branch is just a new label on the same commit. Free, instant.","Work happens on the branch. main is untouched.","Several commits later, still nothing live has changed.","Switch back: main is exactly as it was. The draft waits safely."]'></p>
   <div class="cols"><div class="card"><h4>Think of it as</h4><p>A copy of the whole system you can break freely, without a change window.</p></div></div>
+  <div class="iaas"><b>In the VM world</b>The test or lab environment you copy before touching production, except it takes a second and costs nothing.</div>
   <aside class="notes">SAY: this is the idea that makes change safe. You never edit production; you propose a branch.
 HEAD is "where you are standing right now".</aside>
 </section>
@@ -82,6 +85,7 @@ HEAD is "where you are standing right now".</aside>
     <div class="card"><h4>A pull request is</h4><ul><li>a proposal to merge</li><li>a conversation about the change</li><li>a gate: checks must pass, people must approve</li></ul></div>
     <div class="card"><h4>In this demo</h4><ul><li>automated check: <code class="cmd">validate-manifests</code></li><li>a security reviewer must approve</li><li>the author <b>cannot</b> approve their own</li></ul></div>
   </div>
+  <div class="iaas"><b>In the VM world</b>The change request and the CAB: describe it, get it reviewed, get sign-off before it goes anywhere near production.</div>
   <aside class="notes">SAY: this slide is the change-approval process, in the open. The ticket, the CAB and the audit log are all the same object.
 We will add the approvers' GitHub accounts live later and they will approve a real one.</aside>
 </section>
@@ -113,6 +117,7 @@ SHOW: `git worktree list` in the terminal.</aside>
   <div class="graph" data-ops='[[{"c":"good"},{"c":"good 2"}],[{"c":"bad change"}],[{"push":true}],[{"revert":true}],[{"push":true}]]'></div>
   <p class="cap" data-caps='["A healthy history.","Someone merges a bad change.","It is live. Now what?","git revert: a new commit that undoes it. The bad commit stays in the record.","Pushed. Rolled back, with a full audit trail of what happened and when."]'></p>
   <div class="cols"><div class="card"><h4>Why this matters</h4><p>Rollback is a normal, reviewed, recorded change. Later, we will do it with the platform watching and the website never going down.</p></div></div>
+  <div class="iaas"><b>In the VM world</b>The rollback plan in the change ticket, except it's a button, not a document, and it is itself recorded.</div>
   <aside class="notes">SAY: in many shops rollback is a panic. Here it is a commit like any other, and it goes through the same gates unless you choose otherwise.</aside>
 </section>
 
