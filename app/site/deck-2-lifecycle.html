@@ -67,6 +67,27 @@ ASK THE ROOM: how often has a change gone wrong because of a typo or a missed st
 KEY POINT: the thing that was reviewed is byte-for-byte the thing that was applied.</aside>
 </section>
 
+<section class="slide" data-id="approvers" data-part="Life of a change" data-scene="approval-gate" data-steps="5">
+  <div class="part">Part 2 · Life of a change · <span class="live-badge">LIVE</span></div>
+  <h2>Who is allowed to say yes?</h2>
+  <div class="term">
+    <div data-show="1"><span class="c"># 1. two people in this room become reviewers</span></div>
+    <div data-show="2"><span class="c"># 2. a file lists who must look at changes (CODEOWNERS)</span></div>
+    <div data-show="3"><span class="c"># 3. a rule: no change reaches main without an approval and passing checks</span></div>
+    <div data-show="4"><span class="c"># 4. I try to approve my own change… I can't. Neither can anyone who wrote it.</span></div>
+    <div data-show="5"><span class="c"># 5. a reviewer approves from their own browser. Now it can ship.</span></div>
+  </div>
+  <div class="cols">
+    <div class="card" data-show="3"><h4>The gate</h4><p>Applies to the owner too. Nobody ships their own change alone.</p></div>
+    <div class="card" data-show="5"><h4>The record</h4><p>Who approved, when, and exactly what they saw, kept with the change.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>The CAB membership list, and the rule that the person who raised the change cannot sign it off.</div>
+  <aside class="notes">BEFORE THIS: ask the room for two GitHub usernames (or have them create free accounts). The assistant adds them as collaborators with Write access: that matters, because approvals from Read-only collaborators do not count.
+SAY: the point is separation of duties, enforced by the tool and not by a policy document.
+WATCH FOR: reviewers must accept the emailed invitation before they can approve. Plan B and break-glass are in the scene.
+CHAT CUE: "Run scene approval-gate".</aside>
+</section>
+
 <section class="slide" data-id="live-unlock" data-scene="live-unlock" data-part="Life of a change" data-steps="3">
   <div class="part">Part 2 · Life of a change · <span class="live-badge">LIVE</span></div>
   <h2>Do it for real: unlock the next chapter</h2>

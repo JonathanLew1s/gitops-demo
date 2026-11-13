@@ -14,6 +14,7 @@ The presenter says `Run scene <id>`; the assistant follows `scenes/<id>.md`.
 |---|---|---|
 | `live-sandbox` | commit, status, log, diff in a throwaway folder | read-only |
 | `live-see-it` | nodes, pods, replicasets, service, quota | read-only |
+| `approval-gate` | add reviewers, CODEOWNERS and a ruleset: nobody ships their own change | needs human approval |
 | `live-unlock` | a real change: branch, PR, checks, approval, merge, live | needs human approval |
 | `live-drift` | edit production by hand, watch Argo CD revert it | reversible |
 | `handshake` | app team asks, platform team decides (quota) | needs human approval |

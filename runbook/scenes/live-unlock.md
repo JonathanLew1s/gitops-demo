@@ -28,7 +28,7 @@ Advance one step per cue. Narrate before each.
 3. Commit and push: `git commit -am "Unlock chapter 1: Git, the time machine"` then `git push -u origin unlock-chapter-1`
 4. Open the pull request: `gh pr create --fill` and show the PR page and the ticker on the slide (press R on the slide).
 5. Automated checks: `gh pr checks --watch` — "a robot rejects broken manifests before a human spends time"
-6. **Pause for the human.** Ask the reviewer to approve in GitHub. Do not merge until the presenter says "approved". (If no ruleset is set yet, the presenter decides.)
+6. **Pause for the human.** (If `approval-gate` has been run, the merge button stays blocked until a reviewer approves: this is the moment to show it.) Ask the reviewer to approve in GitHub. Do not merge until the presenter says "approved". (If no ruleset is set yet, the presenter decides.)
 7. Merge: `gh pr merge --squash --delete-branch`, then force Argo to look (see env.md).
 8. Watch the lesson page: chapter 1 unlocks without a reload.
 
