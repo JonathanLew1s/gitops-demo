@@ -99,3 +99,7 @@ table.cmp th.then { color: var(--dim); } table.cmp th.now { color: var(--ok); }
 .diff .rem { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--bad) 60%, transparent); }
 .diff div:not(.file):not(.add):not(.rem)::before { content: "  "; white-space: pre; }
 .hint { color: var(--dim); }
+
+#scene { position: fixed; right: 1.5vw; bottom: 4vh; z-index: 6; background: var(--panel); border: 1px solid var(--bad); border-radius: 12px; padding: 8px 12px; font-size: clamp(.8rem, 1.2vw, 1rem); max-width: 40vw; }
+#scene button { margin: 0 6px; background: transparent; color: var(--accent); border: 1px solid var(--accent); border-radius: 6px; padding: 2px 8px; font: inherit; cursor: pointer; }
+#scene .cuetext { margin-top: 4px; color: var(--dim); }

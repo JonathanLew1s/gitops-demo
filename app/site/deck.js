@@ -5,6 +5,8 @@ const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 let slides = [], idx = 0, step = 0;
+const REPO = 'https://github.com/JonathanLew1s/gitops-demo';
+const cue = (id) => `Run scene ${id}`;
 const maxStep = (s) => +(s.dataset.steps || 0);
 
 // ---------- git graph ----------
@@ -137,9 +139,21 @@ function render() {
   $$('.graph', s).forEach((g) => drawGraph(g, JSON.parse(g.dataset.ops), step));
   $$('.cap', s).forEach((c) => { const caps = JSON.parse(c.dataset.caps || '[]'); c.textContent = caps[Math.min(step, caps.length - 1)] || ''; });
   $$('.ticker', s).forEach((t) => { if (!t.dataset.loaded) { t.dataset.loaded = 1; loadTicker(t); } });
+  const sc = $('#scene');
+  if (s.dataset.scene) {
+    const id = s.dataset.scene;
+    sc.hidden = false;
+    sc.innerHTML = `<span class="live-badge">LIVE</span> <b>${esc(id)}</b> <button id="copycue" title="Copy the cue (S)">Copy cue</button> <a href="${REPO}/blob/main/runbook/scenes/${esc(id)}.md" target="_blank" rel="noopener">Open the instructions</a><div class="cuetext mono">${esc(cue(id))}</div>`;
+    $('#copycue').onclick = copyCue;
+  } else sc.hidden = true;
   $('#bar-fill').style.width = ((idx + (maxStep(s) ? step / maxStep(s) : 1)) / slides.length * 100) + '%';
   $('#where').textContent = `${idx + 1} / ${slides.length} · ${s.dataset.part || ''}`;
   try { history.replaceState(null, '', '#' + s.dataset.id); } catch (e) { /* ignore */ }
+}
+function copyCue() {
+  const id = slides[idx].dataset.scene; if (!id) return;
+  const done = () => { const b = $('#copycue'); if (b) { b.textContent = 'Copied'; setTimeout(() => { b.textContent = 'Copy cue'; }, 1500); } };
+  (navigator.clipboard ? navigator.clipboard.writeText(cue(id)) : Promise.reject()).then(done).catch(() => window.prompt('Copy this cue:', cue(id)));
 }
 const go = (i, st = 0) => { idx = Math.max(0, Math.min(slides.length - 1, i)); step = st; render(); };
 const next = () => (step < maxStep(slides[idx]) ? (step++, render()) : go(idx + 1));
@@ -164,6 +178,7 @@ document.addEventListener('keydown', (e) => {
   else if (k === 'n' || k === 'N') document.body.classList.toggle('notes');
   else if (k === 'o' || k === 'O') overview();
   else if (k === 'Escape') $('#overview').hidden = true;
+  else if (k === 's' || k === 'S') copyCue();
   else if (k === 'r' || k === 'R') $$('.ticker', slides[idx]).forEach((t) => loadTicker(t));
 });
 let touchX = null;
