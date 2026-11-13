@@ -1,0 +1,35 @@
+# The automated tests the canary must pass before a human is even asked.
+# If any check fails, Argo Rollouts aborts and traffic stays on the old version.
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: smoke-test
+spec:
+  metrics:
+    - name: canary-healthy
+      interval: 5s
+      count: 4
+      failureLimit: 0
+      successCondition: result == "OK"
+      provider:
+        web:
+          url: http://podinfo-canary.gitops-demo.svc.cluster.local:9898/healthz
+          jsonPath: "{$.status}"
+    - name: canary-ready
+      interval: 5s
+      count: 4
+      failureLimit: 0
+      successCondition: result == "OK"
+      provider:
+        web:
+          url: http://podinfo-canary.gitops-demo.svc.cluster.local:9898/readyz
+          jsonPath: "{$.status}"
+    - name: canary-serves-page
+      interval: 5s
+      count: 4
+      failureLimit: 0
+      successCondition: result != ""
+      provider:
+        web:
+          url: http://podinfo-canary.gitops-demo.svc.cluster.local:9898/
+          jsonPath: "{$.version}"

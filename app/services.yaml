@@ -27,3 +27,35 @@ spec:
     - name: http
       port: 9898
       targetPort: http
+---
+# Managed by Argo Rollouts: stable always points at the proven version,
+# canary at the version being tested. "podinfo" above spans both.
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo-stable
+  labels:
+    app.kubernetes.io/name: podinfo
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: podinfo
+  ports:
+    - name: http
+      port: 9898
+      targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: podinfo-canary
+  labels:
+    app.kubernetes.io/name: podinfo
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: podinfo
+  ports:
+    - name: http
+      port: 9898
+      targetPort: http

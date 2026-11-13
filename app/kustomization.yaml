@@ -3,9 +3,9 @@ kind: Kustomization
 namespace: gitops-demo
 resources:
   - web-deployment.yaml
-  - podinfo-deployment.yaml
+  - podinfo-rollout.yaml
+  - analysis.yaml
   - services.yaml
-  - networkpolicy.yaml
   - quota.yaml
 # The website is just files in git. Kustomize hashes them into the ConfigMap
 # name, so editing any file in site/ rolls the web pods. No image build needed.

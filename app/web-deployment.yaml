@@ -6,7 +6,12 @@ metadata:
     app.kubernetes.io/name: web
     app.kubernetes.io/part-of: gitops-demo
 spec:
-  replicas: 2
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0   # never remove a working pod before its replacement is ready
+      maxSurge: 1
   selector:
     matchLabels:
       app.kubernetes.io/name: web
@@ -31,7 +36,7 @@ spec:
             httpGet:
               path: /healthz
               port: http
-            periodSeconds: 5
+            periodSeconds: 2
           livenessProbe:
             httpGet:
               path: /healthz
