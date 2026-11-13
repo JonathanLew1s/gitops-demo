@@ -28,7 +28,7 @@ for sid, path in scenes.items():
     for h in required:
         if not re.search(rf"^## {re.escape(h)}\s*$", text, re.M):
             errors.append(f"{path.name}: missing section '## {h}'")
-    if sid not in used:
+    if meta.get("deck") != "none" and sid not in used:
         errors.append(f"{path.name}: no deck slide uses data-scene={sid} (orphan)")
 
 if errors:

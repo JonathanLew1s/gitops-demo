@@ -23,6 +23,7 @@ configMapGenerator:
       - site/deck-2-lifecycle.html
       - site/deck-3-k8s.html
       - site/deck-4-argo.html
+      - site/deck-5-resilience.html
       - site/chapter-0.html
       - site/chapter-1.html
       - site/chapter-2.html

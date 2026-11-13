@@ -1,0 +1,111 @@
+<section class="slide title" data-id="zd-title" data-part="Zero-downtime operations">
+  <div class="part">Part 5</div>
+  <h2>Upgrades without downtime</h2>
+  <p class="sub">Resilience by design, and a release process that tests itself on a small share of users before anyone else.</p>
+  <aside class="notes">SAY: this is the part that matters most for operations. Not "can it be done", but "what happens to users while we do it?". We measure that on the live site.</aside>
+</section>
+
+<section class="slide" data-id="single-copy" data-part="Zero-downtime operations" data-scene="resilience" data-steps="5">
+  <div class="part">Part 5 · <span class="live-badge">LIVE</span> Resilience</div>
+  <h2>One copy is a single point of failure</h2>
+  <div class="term">
+    <div data-show="0"><span class="c"># Right now: one copy of the backend. The availability bar is green.</span></div>
+    <div data-show="1"><span class="p">$</span> kubectl delete pod --force   <span class="c"># a crash, no warning</span></div>
+    <div data-show="2"><span class="c"># the bar turns red: about 12 seconds with no answer while the new copy warms up</span></div>
+    <div data-show="3"><span class="c"># the fix is a reviewed pull request: replicas 1 → 2</span></div>
+    <div data-show="4"><span class="p">$</span> kubectl delete pod --force   <span class="c"># crash again…</span></div>
+    <div data-show="5"><span class="c"># …nothing visible. The other copy kept answering.</span></div>
+  </div>
+  <div class="cols">
+    <div class="card" data-show="2"><h4>1 copy</h4><p>A crash is an outage until the replacement is ready.</p></div>
+    <div class="card" data-show="5"><h4>2 copies</h4><p>A crash is a non-event. Nobody is paged.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>A single VM with no HA pair: a reboot, or a host failure, is an outage. Two VMs behind a load balancer is the same fix.</div>
+  <aside class="notes">SAY: look at the green bar. Now watch it.
+After step 2, point at the red blocks and say how long they lasted. After step 5: the same crash, no red.
+REHEARSED NUMBERS: 1 copy about 12s outage (16 of 83 requests failed); 2 copies, 0 failures in 3 runs.
+IF ASKED why a normal delete shows nothing: a graceful delete lets the old copy keep answering while the new one starts. A crash gets no such grace.</aside>
+</section>
+
+<section class="slide" data-id="rolling-canary" data-part="Zero-downtime operations" data-steps="5">
+  <div class="part">Part 5 · Safe upgrades</div>
+  <h2>A canary: try it on a few users first</h2>
+  <ol class="flow" data-cur-group>
+    <li data-show="1"><b>100% old</b><small>everyone on v1</small><em>start</em></li>
+    <li data-show="2"><b>50% / 50%</b><small>new version alongside the old</small><em>the canary</em></li>
+    <li data-show="3"><b>Tests run</b><small class="actor a-ci">automatically, on the new copies</small><em>health, ready, serving</em></li>
+    <li data-show="4"><b>A person looks</b><small class="actor a-sec">and decides</small><em>promote or stop</em></li>
+    <li data-show="5"><b>100% new</b><small>old copies retired</small><em>done</em></li>
+  </ol>
+  <p class="cap" data-caps='["","Everyone is on the current version.","The new version starts next to the old. Half of the traffic can reach it.","Automatic tests hit the new copies. Any error fails the release.","Two browsers can sit on different versions at once while a person checks.","Promote, and the rest of the copies are replaced one by one. Nobody is dropped."]'></p>
+  <div class="iaas"><b>In the VM world</b>A phased roll-out across a server pool, with a go/no-go meeting in the middle, normally a weekend of manual work.</div>
+  <aside class="notes">SAY: this is the difference between "deploy and hope" and "deploy and know". The new version proves itself on a small share before it gets everyone.</aside>
+</section>
+
+<section class="slide" data-id="canary-upgrade" data-part="Zero-downtime operations" data-scene="canary-upgrade" data-steps="5">
+  <div class="part">Part 5 · <span class="live-badge">LIVE</span> Upgrade</div>
+  <h2>Replace the vulnerable version, live</h2>
+  <div class="term">
+    <div data-show="0"><span class="c"># the change: three lines in git: version, colour, message</span></div>
+    <div data-show="1"><span class="p">$</span> gh pr create   <span class="c"># checks run, a person approves</span></div>
+    <div data-show="2"><span class="c"># merge → the platform starts the canary: 50% on the new version</span></div>
+    <div data-show="3"><span class="c"># automatic tests pass → it pauses for a human</span></div>
+    <div data-show="4"><span class="c"># tab 1: stable v6.5.0 (red) · tab 2: canary v6.9.4 (green) · both live</span></div>
+    <div data-show="5"><span class="p">$</span> promote   <span class="c"># 100% on v6.9.4. The availability bar never turned red.</span></div>
+  </div>
+  <div class="onsite" data-show="4"><b>Look at the two tabs.</b> Two versions, same site, same time, and nobody was told.</div>
+  <aside class="notes">BEFORE: open three tabs on the lesson page and set them to Stable only, Canary only, and Everything.
+REHEARSED: whole upgrade, 304 probes of the public URL, 0 failed.
+SECURITY ANGLE: the old version is the one with known vulnerabilities; the fix is a three-line, reviewed, reversible change.</aside>
+</section>
+
+<section class="slide" data-id="bad-release" data-part="Zero-downtime operations" data-scene="bad-release" data-steps="5">
+  <div class="part">Part 5 · <span class="live-badge">LIVE</span> When a release is bad</div>
+  <h2>The platform stops it, then we undo it</h2>
+  <div class="term">
+    <div data-show="0"><span class="c"># "v3": a release with a bug. About a third of requests fail.</span></div>
+    <div data-show="1"><span class="c"># the manifest checks pass: they cannot know the software is faulty</span></div>
+    <div data-show="2"><span class="c"># merge → canary starts → automatic tests see errors…</span></div>
+    <div data-show="3"><span class="c"># ~20 seconds: RolloutAborted. Degraded. Everyone else stays on the good version.</span></div>
+    <div data-show="4"><span class="p">$</span> git revert   <span class="c"># the fix is an ordinary, reviewed commit</span></div>
+    <div data-show="5"><span class="c"># ~20 seconds later: Healthy. The whole story is in the history.</span></div>
+  </div>
+  <div class="cols">
+    <div class="card" data-show="3"><h4>Blast radius</h4><p>A small share of users, for about 20 seconds. Not everyone, not for hours.</p></div>
+    <div class="card" data-show="5"><h4>Rollback</h4><p>Not a panic. A revert, with the same approvals and the same audit trail.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>A failed change, then an emergency change to back it out, and a post-incident review to work out what happened.</div>
+  <aside class="notes">SAY: the tests are the same ones we ran a minute ago. They failed this time, so the release never reached everyone.
+HONEST NUMBERS: during that window 4 of 282 requests failed in rehearsal (1.4%). That is the cost of testing on live traffic, and why the canary is small.
+KEY POINT: we made the test strict. By default the tool tolerates a few errors in a row, and an intermittent bug slipped through our first attempt. That is a real lesson about writing the checks, not just having them.</aside>
+</section>
+
+<section class="slide" data-id="zd-recap" data-part="Zero-downtime operations" data-steps="5">
+  <div class="part">Part 5 · Recap</div>
+  <h2>What we just saw</h2>
+  <table class="cmp">
+    <tr><th>Situation</th><th>Result</th></tr>
+    <tr data-show="1"><td><b>A crash, one copy</b></td><td>A real outage, until the replacement warmed up</td></tr>
+    <tr data-show="2"><td><b>A crash, two copies</b></td><td>No visible impact</td></tr>
+    <tr data-show="3"><td><b>An upgrade</b></td><td>Two versions side by side, no failed request</td></tr>
+    <tr data-show="4"><td><b>A bad release</b></td><td>Stopped automatically in about 20 seconds</td></tr>
+    <tr data-show="5"><td><b>Getting back</b></td><td>A reviewed commit, not an emergency</td></tr>
+  </table>
+  <aside class="notes">SAY: more to think about up front. In operation: less downtime, calmer changes, and an audit trail of every one.</aside>
+</section>
+
+<section class="slide" data-id="expose" data-part="Zero-downtime operations" data-scene="expose-service" data-steps="4">
+  <div class="part">Part 5 · <span class="live-badge">LIVE</span> Service exposure</div>
+  <h2>Opening a door to the internet, on purpose</h2>
+  <div class="places" data-cur-group>
+    <div class="place" data-show="1"><div class="box">Service<small>private, cluster only</small></div></div>
+    <div class="arrow" data-show="2">→<code class="cmd">tunnel</code>outbound only</div>
+    <div class="place" data-show="2"><div class="box">Cloudflare edge<small>certificate + DNS</small></div></div>
+    <div class="arrow" data-show="3">→<code class="cmd">https</code>valid cert</div>
+    <div class="place" data-show="3"><div class="box">Visitor<small>anywhere</small></div></div>
+  </div>
+  <p class="cap" data-caps='["","Until we say otherwise, the service has no address outside the cluster.","The cluster opens a connection out to Cloudflare. No inbound firewall rule, no public IP on the cluster.","Cloudflare presents the certificate and renews it automatically. Nobody keeps a renewal calendar.","The route is a reviewed change in the platform repo. Opening the door is deliberate, recorded and reversible."]'></p>
+  <div class="iaas"><b>In the VM world</b>A firewall change, a NAT rule, a load-balancer VIP, and a purchased certificate that someone must remember to renew.</div>
+  <aside class="notes">PRESENTER-LED: you run the tunnel and DNS step with your credentials; the assistant explains and prepares the git side.
+KEY POINT: exposure is a decision with a paper trail, not a side effect of deploying.</aside>
+</section>

@@ -58,9 +58,9 @@ OPTIONAL: open the Argo CD UI on the tailnet and show the gitops-demo app tree.<
   <h2>Someone edits production by hand…</h2>
   <div class="term">
     <div data-show="0"><span class="p">$</span> kubectl -n gitops-demo scale deployment web --replicas=5   <span class="c"># a well-meaning quick fix</span></div>
-    <div data-show="1"><span class="c"># watch the pod tiles: 5 appear…</span></div>
-    <div data-show="2"><span class="c"># Argo CD: OutOfSync. Git says 2. Self-heal kicks in…</span></div>
-    <div data-show="3"><span class="c"># …and the count returns to what git says.</span></div>
+    <div data-show="1"><span class="p">$</span> kubectl get pods   <span class="c"># four extra pods start to be created…</span></div>
+    <div data-show="2"><span class="p">$</span> kubectl get events   <span class="c"># Synced → OutOfSync. Git says 1; the cluster said 5…</span></div>
+    <div data-show="3"><span class="c"># …and about 3 seconds later it is back to what git says.</span></div>
   </div>
   <div class="cols"><div class="card" data-show="3"><h4>The lesson</h4><p>A hand edit doesn't survive. If a change matters, it must go through git, where it is reviewed and recorded. Production can't quietly drift from the record.</p></div></div>
   <aside class="notes">CHAT CUE: "Claude, run the drift scene: scale web by hand, then show Argo reverting it."

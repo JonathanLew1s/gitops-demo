@@ -24,7 +24,7 @@ jq '.chapters[1].unlocked' app/site/chapters.json                               
 ## Do
 Advance one step per cue. Narrate before each.
 1. Branch: `git switch -c unlock-chapter-1` — "a safe draft; production is untouched"
-2. Edit `app/site/chapters.json`: set chapter 1 `"unlocked": true`. Replace the placeholder body of `app/site/chapter-1.html` with the snippet below. Show `git diff`.
+2. Change exactly one value: `sed -i '/"id": 1,/s/"unlocked": false/"unlocked": true/' app/site/chapters.json` (do NOT use jq: it reformats the whole file and the diff stops being one line). Replace the placeholder body of `app/site/chapter-1.html` with the snippet below. Show `git diff`: one changed line in chapters.json plus the new chapter text.
 3. Commit and push: `git commit -am "Unlock chapter 1: Git, the time machine"` then `git push -u origin unlock-chapter-1`
 4. Open the pull request: `gh pr create --fill` and show the PR page and the ticker on the slide (press R on the slide).
 5. Automated checks: `gh pr checks --watch` — "a robot rejects broken manifests before a human spends time"
@@ -40,6 +40,8 @@ Chapter 1 snippet for step 2:
 ```
 
 ## See
+Rehearsed: merge to live on the public site in about 16 seconds, with zero failed requests while the web tier rolled.
+
 - The pull request appears on the slide's ticker, then turns "merged".
 - The Argo CD application briefly goes OutOfSync, then Synced.
 - On the lesson page the 🔒 on chapter 1 disappears and the new text shows.
