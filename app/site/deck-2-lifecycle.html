@@ -1,0 +1,114 @@
+<section class="slide title" data-id="lifecycle-title" data-part="Life of a change">
+  <div class="part">Part 2</div>
+  <h2>The life of a change</h2>
+  <p class="sub">Two kinds of change, two repositories, two teams. We will follow each one from idea to live.</p>
+  <aside class="notes">SAY: so far, Git on its own. Now what makes it powerful: a platform that watches the repo and makes reality match it.</aside>
+</section>
+
+<section class="slide" data-id="two-lifecycles" data-part="Life of a change" data-steps="2">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2>Two repos, two kinds of change</h2>
+  <div class="cols">
+    <div class="card" data-show="1">
+      <h4 class="a-dev">Software change</h4>
+      <p><b>Repo:</b> <span class="mono">gitops-demo</span> (public)</p>
+      <p><b>What:</b> what runs: the website, its versions, replica counts</p>
+      <p><b>Who:</b> the app team, approved by security</p>
+      <p><b>Example:</b> unlock a chapter, upgrade nginx, scale to 2</p>
+    </div>
+    <div class="card" data-show="2">
+      <h4 class="a-plat">Platform change</h4>
+      <p><b>Repo:</b> <span class="mono">talos</span> (private)</p>
+      <p><b>What:</b> where and how it runs: namespaces, quotas, routes, guard-rails</p>
+      <p><b>Who:</b> the platform team</p>
+      <p><b>Example:</b> create the namespace, add the public route, raise a quota</p>
+    </div>
+  </div>
+  <aside class="notes">SAY: the split is deliberate. Developers can change what runs, but they cannot grant themselves more resources or open new doors; that belongs to the platform team.
+ASK: where does that separation live in your world today?</aside>
+</section>
+
+<section class="slide" data-id="software-flow" data-part="Life of a change" data-steps="8">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2><span class="a-dev">Software</span> change: idea to live</h2>
+  <ol class="flow" data-cur-group>
+    <li data-show="1"><b>Branch</b><small class="actor a-dev">Developer</small><em>git switch -c</em></li>
+    <li data-show="2"><b>Edit &amp; commit</b><small class="actor a-dev">Developer</small><em>git commit</em></li>
+    <li data-show="3"><b>Push &amp; open PR</b><small class="actor a-dev">Developer</small><em>GitHub</em></li>
+    <li data-show="4"><b>Automated checks</b><small class="actor a-ci">GitHub Actions</small><em>validate-manifests</em></li>
+    <li data-show="5"><b>Human approval</b><small class="actor a-sec">Security reviewer</small><em>required, not the author</em></li>
+    <li data-show="6"><b>Merge to main</b><small class="actor a-dev">Developer</small><em>main = desired state</em></li>
+    <li data-show="7"><b>Argo CD notices</b><small class="actor a-argo">Argo CD</small><em>git ≠ cluster</em></li>
+    <li data-show="8"><b>Canary rollout</b><small class="actor a-argo">Argo Rollouts</small><em>50% → tests → 100%</em></li>
+  </ol>
+  <p class="cap" data-caps='["","Nothing live is touched. Work happens on a branch.","The change is a recorded, named snapshot.","Proposed in public. Reviewers can comment on any line.","A robot rejects broken YAML before a human wastes time.","A person with the right authority signs it off. The author cannot.","The agreed change joins main, the single source of truth.","The platform compares git with the cluster and sees a difference.","Pods are replaced gradually. Users see no downtime."]'></p>
+  <aside class="notes">SAY: nobody typed a command on a server. Nobody had cluster credentials. A person approved, a robot applied.
+SECURITY ANGLE: the approver reviews a diff, a few lines of text, not a screenshot of a console.</aside>
+</section>
+
+<section class="slide" data-id="live-unlock" data-part="Life of a change" data-steps="3">
+  <div class="part">Part 2 · Life of a change · <span class="live-badge">LIVE</span></div>
+  <h2>Do it for real: unlock the next chapter</h2>
+  <div class="cols">
+    <div class="term">
+      <div data-show="0"><span class="p">$</span> git switch -c unlock-chapter-1</div>
+      <div data-show="0"><span class="p">$</span> <span class="c"># edit chapters.json: "unlocked": true</span></div>
+      <div data-show="1"><span class="p">$</span> git commit -am "Unlock chapter 1"</div>
+      <div data-show="1"><span class="p">$</span> git push -u origin unlock-chapter-1</div>
+      <div data-show="2"><span class="p">$</span> gh pr create   <span class="c"># watch it appear →</span></div>
+      <div data-show="3"><span class="p">$</span> <span class="c"># checks, approval, merge, watch the lesson tab</span></div>
+    </div>
+    <div class="card"><div class="ticker" data-repo="JonathanLew1s/gitops-demo"><p class="hint">loading from GitHub…</p></div><p class="hint">Live from GitHub. Press R to refresh.</p></div>
+  </div>
+  <aside class="notes">CHAT CUE: "Claude, unlock chapter 1 using a branch and pull request, but stop before merging."
+THEN: show the PR in the browser. Let the CI check go green. Approver approves (the author cannot). Then: "Claude, merge it and hard-refresh Argo." Switch to the lesson tab: chapter 1 unlocks without a reload.
+PLAN B: if Argo is slow, run: kubectl -n argocd annotate application gitops-demo argocd.argoproj.io/refresh=hard</aside>
+</section>
+
+<section class="slide" data-id="platform-flow" data-part="Life of a change" data-steps="7">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2><span class="a-plat">Platform</span> change: idea to live</h2>
+  <ol class="flow" data-cur-group>
+    <li data-show="1"><b>Branch &amp; commit</b><small class="actor a-plat">Platform engineer</small><em>talos repo</em></li>
+    <li data-show="2"><b>Open PR</b><small class="actor a-plat">Platform engineer</small><em>codex/… branch</em></li>
+    <li data-show="3"><b>Policy checks</b><small class="actor a-ci">GitHub Actions + pre-commit</small><em>inventory, schema, secrets</em></li>
+    <li data-show="4"><b>Review &amp; merge</b><small class="actor a-plat">Platform owner</small><em>never straight to main</em></li>
+    <li data-show="5"><b>Argo app-of-apps</b><small class="actor a-argo">Argo CD</small><em>sees the new definition</em></li>
+    <li data-show="6"><b>Cluster reconciles</b><small class="actor a-argo">Argo CD</small><em>namespace, quota, project</em></li>
+    <li data-show="7"><b>Route &amp; DNS</b><small class="actor a-plat">Platform engineer</small><em>tunnel + Cloudflare</em></li>
+  </ol>
+  <p class="cap" data-caps='["","Same discipline as software: branch, commit.","Proposed in the open.","Real story: the platform repo’s own check refused my first PR because the new component was missing from the maintenance inventory.","The platform owner approves. Nothing is applied by hand.","The platform notices the new definition in git.","The namespace, limits and permissions appear.","Until the route is published, the site is private. Opening a door is a deliberate act."]'></p>
+  <aside class="notes">SAY: this is the same loop, one layer down. The "customer" of this repo is the application team.
+REAL EXAMPLES: show talos PR #850 (namespace + route) and the failed-then-green check; #851 (allow canary rollouts).
+NOTE: talos is private, so share your screen for the GitHub view; remote attendees see the slide.</aside>
+</section>
+
+<section class="slide" data-id="handshake" data-part="Life of a change" data-steps="6">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2>Where the two meet: guard-rails</h2>
+  <ol class="flow" data-cur-group>
+    <li data-show="1"><b class="a-dev">App team</b><small>PR: scale backend to 8 replicas</small><em>gitops-demo repo</em></li>
+    <li data-show="2"><b class="a-argo">Argo CD</b><small>applies it. Only some pods can start.</small><em>quota says: max 6 pods</em></li>
+    <li data-show="3"><b>The page</b><small>shows the gap: asked for 8, fewer running</small><em>visible, not hidden</em></li>
+    <li data-show="4"><b class="a-plat">Platform team</b><small>PR: raise the quota to 12</small><em>talos repo</em></li>
+    <li data-show="5"><b class="a-argo">Argo CD</b><small>applies the new limit</small><em>no change to the app</em></li>
+    <li data-show="6"><b>The page</b><small>all 8 pods running</small><em>both PRs, both audited</em></li>
+  </ol>
+  <p class="sub">The developers can ask. Only the platform team can say yes.</p>
+  <aside class="notes">SAY: capacity is a platform decision, expressed as code, reviewed like everything else. The app team cannot edit the limit even by mistake, because its Argo project is not allowed to deploy quotas.
+STATUS: this scene needs the platform quota PR merged. Check `kubectl -n gitops-demo get resourcequota`.
+CHAT CUE: "Claude, run the guard-rail scene."</aside>
+</section>
+
+<section class="slide" data-id="who-sees-what" data-part="Life of a change" data-steps="3">
+  <div class="part">Part 2 · Life of a change</div>
+  <h2>What each team gets</h2>
+  <table class="cmp">
+    <tr><th>Team</th><th>Before</th><th>With this model</th></tr>
+    <tr data-show="1"><td><b class="a-sec">Security</b></td><td>Reviews screenshots and tickets after the fact</td><td>Approves a precise diff <i>before</i> it goes live; scan results visible on the page</td></tr>
+    <tr data-show="2"><td><b class="a-plat">Infrastructure</b></td><td>Change windows, manual steps, "who touched this?"</td><td>Upgrade = a reviewed commit. Rollback = another commit. No downtime.</td></tr>
+    <tr data-show="3"><td><b class="a-dev">Everyone</b></td><td>Drift between what we think is running and what is</td><td>The platform continuously forces reality to match git</td></tr>
+  </table>
+  <aside class="notes">SAY: this is the sales line. It is technically more to think about up front, but in operation it means less downtime, more visibility and calmer changes.
+Then move to Part 3: the anatomy of what is running.</aside>
+</section>

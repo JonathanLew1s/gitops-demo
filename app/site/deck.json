@@ -1,0 +1,6 @@
+{
+  "parts": [
+    { "file": "deck-1-git.html",       "title": "Git",                  "unlocked": true },
+    { "file": "deck-2-lifecycle.html", "title": "Life of a change",     "unlocked": true }
+  ]
+}

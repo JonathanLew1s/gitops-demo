@@ -56,3 +56,4 @@ a { color: var(--accent); }
 .mix div { transition: flex-grow .4s; }
 .legend { display: flex; gap: 14px; margin-top: 6px; font-size: .85rem; color: var(--dim); flex-wrap: wrap; }
 .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; }
+.deck-link { margin-left: auto; padding: 8px 14px; border: 1px solid var(--accent); border-radius: 8px; text-decoration: none; font-weight: 600; }

@@ -6,7 +6,6 @@ resources:
   - podinfo-rollout.yaml
   - analysis.yaml
   - services.yaml
-  - quota.yaml
 # The website is just files in git. Kustomize hashes them into the ConfigMap
 # name, so editing any file in site/ rolls the web pods. No image build needed.
 configMapGenerator:
@@ -16,6 +15,12 @@ configMapGenerator:
       - site/style.css
       - site/app.js
       - site/chapters.json
+      - site/deck.html
+      - site/deck.js
+      - site/deck.css
+      - site/deck.json
+      - site/deck-1-git.html
+      - site/deck-2-lifecycle.html
       - site/chapter-0.html
       - site/chapter-1.html
       - site/chapter-2.html
