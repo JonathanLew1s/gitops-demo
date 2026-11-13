@@ -21,6 +21,8 @@ configMapGenerator:
       - site/deck.json
       - site/deck-1-git.html
       - site/deck-2-lifecycle.html
+      - site/deck-3-k8s.html
+      - site/deck-4-argo.html
       - site/chapter-0.html
       - site/chapter-1.html
       - site/chapter-2.html

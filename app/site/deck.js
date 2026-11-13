@@ -90,6 +90,13 @@ function render() {
     $$('[data-show]', grp).forEach((e) => e.classList.remove('cur'));
     if (items.length) items.reduce((a, b) => (+b.dataset.show >= +a.dataset.show ? b : a)).classList.add('cur');
   });
+  // data-at='{"2":"gone","3":"new"}': the class applied from that step onward
+  $$('[data-at]', s).forEach((e) => {
+    const m = JSON.parse(e.dataset.at), ks = Object.keys(m).map(Number).sort((a, b) => a - b);
+    Object.values(m).forEach((c) => e.classList.remove(c));
+    const k = ks.filter((x) => x <= step).pop();
+    if (k !== undefined) e.classList.add(m[k]);
+  });
   $$('.graph', s).forEach((g) => drawGraph(g, JSON.parse(g.dataset.ops), step));
   $$('.cap', s).forEach((c) => { const caps = JSON.parse(c.dataset.caps || '[]'); c.textContent = caps[Math.min(step, caps.length - 1)] || ''; });
   $$('.ticker', s).forEach((t) => { if (!t.dataset.loaded) { t.dataset.loaded = 1; loadTicker(t); } });
