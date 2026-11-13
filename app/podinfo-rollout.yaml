@@ -1,15 +1,30 @@
-apiVersion: apps/v1
-kind: Deployment
+# The backend is an Argo Rollout instead of a Deployment: same pods, but the
+# upgrade is staged. 50% of the pods move to the new version, automated tests
+# run against them, then a human promotes (or the tests abort and roll back).
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
   name: podinfo
   labels:
     app.kubernetes.io/name: podinfo
     app.kubernetes.io/part-of: gitops-demo
 spec:
-  replicas: 3
+  replicas: 1
+  revisionHistoryLimit: 3
   selector:
     matchLabels:
       app.kubernetes.io/name: podinfo
+  strategy:
+    canary:
+      stableService: podinfo-stable
+      canaryService: podinfo-canary
+      steps:
+        - setWeight: 50
+        - analysis:
+            templates:
+              - templateName: smoke-test
+        - pause: {}          # a human looks at both versions side by side, then promotes
+        - setWeight: 100
   template:
     metadata:
       labels:
@@ -33,7 +48,7 @@ spec:
             - name: PODINFO_UI_COLOR
               value: "#c0392b"
             - name: PODINFO_UI_MESSAGE
-              value: Hello from the demo backend
+              value: "v1: running, but out of date"
           ports:
             - name: http
               containerPort: 9898
@@ -41,7 +56,7 @@ spec:
             httpGet:
               path: /readyz
               port: http
-            periodSeconds: 5
+            periodSeconds: 3
           livenessProbe:
             httpGet:
               path: /healthz

@@ -18,6 +18,36 @@
   </header>
 
   <main>
+    <section class="panel banner" id="banner">
+      <div>
+        <div class="kicker">This tab is being served by</div>
+        <div class="big" id="b-version">…</div>
+        <div id="b-message" class="hint"></div>
+      </div>
+      <div class="track">
+        <label for="track">This tab talks to</label>
+        <select id="track">
+          <option value="auto">Everything (auto)</option>
+          <option value="stable">Stable version only</option>
+          <option value="canary">Canary version only</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="panel" id="avail-panel">
+      <h2>Availability</h2>
+      <p class="hint">One block per request to the backend. Green is served, red is an outage this visitor would have seen.</p>
+      <div id="timeline" class="timeline"></div>
+      <div class="stats">
+        <span><b id="s-total">0</b> requests</span>
+        <span><b id="s-fail">0</b> failed</span>
+        <span><b id="s-up">100%</b> available</span>
+      </div>
+      <h3 class="sub">Which version answered (last 40)</h3>
+      <div id="mix" class="mix"></div>
+      <div id="mix-legend" class="legend"></div>
+    </section>
+
     <section class="panel" id="pods-panel">
       <h2>Pods answering you right now</h2>
       <p class="hint">Refreshing every 1.5s. Each tile is a different pod behind one Service. Scale, kill or roll them and watch this change.</p>
