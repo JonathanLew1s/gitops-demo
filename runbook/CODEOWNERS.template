@@ -1,5 +1,4 @@
 # Who must review changes. Owners need write access to the repository or this is ignored.
-# Any ONE listed owner satisfies the rule. To require two people, set
-# required_approving_review_count to 2 in ruleset.json.
+# The ruleset requires 2 approvals (required_approving_review_count in ruleset.json).
 # The author of a pull request can never approve their own change.
 * @REVIEWER_ONE @REVIEWER_TWO

@@ -10,6 +10,8 @@ reset: remove the ruleset, the collaborators and CODEOWNERS
 
 Verified beforehand on this repo: a free account on a public repo supports rulesets, required reviews and code-owner review. A disabled test ruleset with these exact rules was created and deleted successfully.
 
+The gate requires **2 approvals from code owners**, and the repo admin (the presenter) can bypass it on a pull request, so the session can still change things. Direct pushes to main stay blocked even for the admin.
+
 Two facts that decide the design:
 - **Reviewers need Write access for their approval to count.** A Read collaborator can comment but their approval does not satisfy a required review.
 - **The author cannot approve their own pull request.** That is what makes the demonstration work.
@@ -34,11 +36,11 @@ Advance one step per cue. Never invent a username: use exactly what the presente
 3. They accept: by the email GitHub sent, or at https://github.com/$DEMO_REPO_SLUG/invitations while logged in. Wait until `gh api repos/$DEMO_REPO_SLUG/collaborators --jq '[.[].login]'` lists both. Do not continue until it does.
 4. Add CODEOWNERS through a pull request, because this is also a change: `git switch -c add-codeowners`, `sed 's/@REVIEWER_ONE/@<first>/; s/@REVIEWER_TWO/@<second>/' runbook/CODEOWNERS.template > .github/CODEOWNERS`, show the file, commit, push, `gh pr create --fill`, wait for checks, `gh pr merge --squash --delete-branch`. The gate is not on yet, so this merges directly.
 5. Turn on the gate: `gh api -X POST repos/$DEMO_REPO_SLUG/rulesets --input runbook/ruleset.json --jq '"ruleset \(.id) \(.enforcement)"'`. Note the id. Show it at Settings, Rules in the browser.
-6. Prove it with the next scene's pull request (for example `live-unlock`): open it as the owner, show the Merge button blocked ("review required"), show the owner cannot approve it, then have a reviewer approve in their browser, and show the merge become available. Then merge.
+6. Prove it with the next scene's pull request (for example `live-unlock`): open it as the owner, show the Merge button blocked ("review required"), show the owner cannot approve it, then have BOTH reviewers approve in their browsers (one approval is not enough), and show the merge become available. Then merge. Separately show that the owner could use "Merge without waiting for requirements" (admin bypass) and say when that is appropriate: emergencies, recorded and visible.
 
 ## See
 - Step 3: both usernames appear as collaborators.
-- Step 6: the merge is blocked until a different person approves, even for the repository owner.
+- Step 6: the merge is blocked until two different people approve; the author cannot count as one.
 
 ## Check
 ```sh
@@ -51,7 +53,7 @@ test -f $DEMO_REPO/.github/CODEOWNERS && echo codeowners present
 - A reviewer cannot accept the invitation or has no account yet: create one live (a free account takes a few minutes) or use the other reviewer; one approver is enough to demonstrate.
 - A reviewer's approval does not unlock the merge: check they accepted, that they are listed with write access, and that the username in CODEOWNERS matches exactly.
 - **Break glass** (the gate is blocking the session and you must continue): `gh api -X PUT repos/$DEMO_REPO_SLUG/rulesets/<id> -f enforcement=disabled`, or Settings, Rules, disable. Say plainly that you did.
-- Want two approvals required instead of one: change `required_approving_review_count` to 2 in a copy of ruleset.json before step 5.
+- Only one reviewer is available: the gate needs 2, so use the admin bypass for the merge, or set `required_approving_review_count` to 1 in a copy of ruleset.json before step 5.
 
 ## Reset
 ```sh

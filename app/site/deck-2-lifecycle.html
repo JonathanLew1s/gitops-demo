@@ -73,12 +73,12 @@ KEY POINT: the thing that was reviewed is byte-for-byte the thing that was appli
   <div class="term">
     <div data-show="1"><span class="c"># 1. two people in this room become reviewers</span></div>
     <div data-show="2"><span class="c"># 2. a file lists who must look at changes (CODEOWNERS)</span></div>
-    <div data-show="3"><span class="c"># 3. a rule: no change reaches main without an approval and passing checks</span></div>
-    <div data-show="4"><span class="c"># 4. I try to approve my own change… I can't. Neither can anyone who wrote it.</span></div>
-    <div data-show="5"><span class="c"># 5. a reviewer approves from their own browser. Now it can ship.</span></div>
+    <div data-show="3"><span class="c"># 3. a rule: no change reaches main without TWO approvals and passing checks</span></div>
+    <div data-show="4"><span class="c"># 4. I try to approve my own change… I can't. Nobody can approve what they wrote.</span></div>
+    <div data-show="5"><span class="c"># 5. both reviewers approve from their own browsers. Now it can ship.</span></div>
   </div>
   <div class="cols">
-    <div class="card" data-show="3"><h4>The gate</h4><p>Applies to the owner too. Nobody ships their own change alone.</p></div>
+    <div class="card" data-show="3"><h4>The gate</h4><p>Direct pushes blocked. An admin can still override in an emergency, and it is on the record.</p></div>
     <div class="card" data-show="5"><h4>The record</h4><p>Who approved, when, and exactly what they saw, kept with the change.</p></div>
   </div>
   <div class="iaas"><b>In the VM world</b>The CAB membership list, and the rule that the person who raised the change cannot sign it off.</div>
