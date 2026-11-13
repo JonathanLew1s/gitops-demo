@@ -1,0 +1,27 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: gitops-demo
+resources:
+  - web-deployment.yaml
+  - podinfo-deployment.yaml
+  - services.yaml
+  - networkpolicy.yaml
+  - quota.yaml
+# The website is just files in git. Kustomize hashes them into the ConfigMap
+# name, so editing any file in site/ rolls the web pods. No image build needed.
+configMapGenerator:
+  - name: site
+    files:
+      - site/index.html
+      - site/style.css
+      - site/app.js
+      - site/chapters.json
+      - site/chapter-0.html
+      - site/chapter-1.html
+      - site/chapter-2.html
+      - site/chapter-3.html
+      - site/chapter-4.html
+      - site/chapter-5.html
+  - name: nginx-conf
+    files:
+      - site/default.conf

@@ -1,0 +1,26 @@
+# The namespace guardrail: a fixed slice of the shared cluster.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: demo-quota
+spec:
+  hard:
+    pods: "20"
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "4"
+    limits.memory: 2Gi
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: demo-defaults
+spec:
+  limits:
+    - type: Container
+      defaultRequest:
+        cpu: 10m
+        memory: 16Mi
+      default:
+        cpu: 100m
+        memory: 64Mi

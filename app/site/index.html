@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Living Lesson</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <h1>The Living Lesson</h1>
+      <p>A website that teaches Git, GitOps and Kubernetes, while running on them.</p>
+    </div>
+    <div class="live" id="live" title="Live connection to the backend">
+      <span class="dot"></span><span id="live-text">connecting…</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="pods-panel">
+      <h2>Pods answering you right now</h2>
+      <p class="hint">Refreshing every 1.5s. Each tile is a different pod behind one Service. Scale, kill or roll them and watch this change.</p>
+      <div id="pods" class="pods"></div>
+    </section>
+
+    <section class="panel" id="bom-panel">
+      <h2>Components on this page</h2>
+      <p class="hint">Read live from the running pods, not typed in by hand.</p>
+      <table>
+        <thead><tr><th>Component</th><th>Running version</th><th>Security scan</th></tr></thead>
+        <tbody id="bom"></tbody>
+      </table>
+    </section>
+
+    <section class="panel" id="lesson-panel">
+      <h2>The lesson</h2>
+      <nav id="chapters" class="chapters"></nav>
+      <article id="lesson" class="lesson"></article>
+    </section>
+  </main>
+
+  <footer>
+    Source of truth: <a href="https://github.com/JonathanLew1s/gitops-demo">github.com/JonathanLew1s/gitops-demo</a>.
+    Every word on this page is a file in git.
+  </footer>
+  <script src="app.js"></script>
+</body>
+</html>
