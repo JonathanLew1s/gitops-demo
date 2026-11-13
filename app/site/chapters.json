@@ -1,40 +1,10 @@
 {
   "chapters": [
-    {
-      "id": 0,
-      "title": "Meet the patient",
-      "blurb": "You are looking at it. This page is running on Kubernetes right now.",
-      "unlocked": true
-    },
-    {
-      "id": 1,
-      "title": "Git: the time machine",
-      "blurb": "Commits, branches, pull requests. Every change to this page starts here.",
-      "unlocked": true
-    },
-    {
-      "id": 2,
-      "title": "Anatomy of this site",
-      "blurb": "Pods, Deployments, Services, ConfigMaps: each one mapped to something you can see.",
-      "unlocked": false
-    },
-    {
-      "id": 3,
-      "title": "GitOps: git drives the cluster",
-      "blurb": "Drift, rollback, approvals, and a bot that patches vulnerabilities.",
-      "unlocked": false
-    },
-    {
-      "id": 4,
-      "title": "Day-2 platform",
-      "blurb": "Monitor, allocate, expand, back up, restore.",
-      "unlocked": false
-    },
-    {
-      "id": 5,
-      "title": "Side quests",
-      "blurb": "Audience picks: chaos, lockdown, canary, break-it-and-fix-it.",
-      "unlocked": false
-    }
+    { "id": 0, "title": "Meet the patient",      "blurb": "You are looking at it. This page is running on Kubernetes right now.", "unlocked": true },
+    { "id": 1, "title": "Git: the time machine", "blurb": "Commits, branches, pull requests. Every change to this page starts here.", "unlocked": false },
+    { "id": 2, "title": "Anatomy of this site",  "blurb": "Pods, Deployments, Services, ConfigMaps: each one mapped to something you can see.", "unlocked": false },
+    { "id": 3, "title": "GitOps: git drives the cluster", "blurb": "Drift, rollback, approvals, and a bot that patches vulnerabilities.", "unlocked": false },
+    { "id": 4, "title": "Day-2 platform",         "blurb": "Monitor, allocate, expand, back up, restore.", "unlocked": false },
+    { "id": 5, "title": "Side quests",            "blurb": "Audience picks: chaos, lockdown, canary, break-it-and-fix-it.", "unlocked": false }
   ]
 }
