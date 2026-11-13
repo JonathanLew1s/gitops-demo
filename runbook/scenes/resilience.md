@@ -28,7 +28,7 @@ Advance one step per cue.
 2. Crash it: `kubectl -n $NS delete pod -l app.kubernetes.io/name=podinfo --grace-period=0 --force` — "an abrupt crash, no warning". Watch the bar turn red for roughly 12 seconds while the replacement warms up.
 3. Open the fix as a pull request: `cd $DEMO_REPO && git switch -c scale-to-two`, then `sed -i '0,/^  replicas: 1$/s//  replicas: 2/' app/podinfo-rollout.yaml app/web-deployment.yaml` (the first replicas line in each file), `git diff`, commit, push, `gh pr create --fill`, `gh pr checks --watch`. Pause for approval if a ruleset is set.
 4. Merge: `gh pr merge --squash --delete-branch`, refresh Argo (env.md). Wait for 4 ready pods (about 20 seconds); two tiles appear.
-5. Crash one backend copy again: `kubectl -n $NS delete pod $(kubectl -n $NS get pods -l app.kubernetes.io/name=podinfo -o name | head -1) --grace-period=0 --force` — the bar stays green.
+5. Crash one backend copy again: `kubectl -n $NS delete $(kubectl -n $NS get pods -l app.kubernetes.io/name=podinfo -o name | head -1) --grace-period=0 --force` — the bar stays green.
 
 ## See
 Step 2: red blocks on the availability bar, then green. Step 5: no red.
