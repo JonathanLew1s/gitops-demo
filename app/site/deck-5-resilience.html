@@ -109,3 +109,19 @@ KEY POINT: we made the test strict. By default the tool tolerates a few errors i
   <aside class="notes">PRESENTER-LED: you run the tunnel and DNS step with your credentials; the assistant explains and prepares the git side.
 KEY POINT: exposure is a decision with a paper trail, not a side effect of deploying.</aside>
 </section>
+
+<section class="slide" data-id="recap" data-part="Zero-downtime operations" data-steps="5">
+  <div class="part">Recap · how a change reaches production</div>
+  <h2>The one-slide refresher</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>1. A change is a text edit</h4><p>On a branch. Nobody logs into a server.</p></div>
+    <div class="card" data-show="2"><h4>2. Robots, then people</h4><p>Automated checks run first. Two people who did not write it approve it.</p></div>
+    <div class="card" data-show="3"><h4>3. Argo CD applies it</h4><p>And keeps it that way: a hand edit is undone in seconds.</p></div>
+    <div class="card" data-show="4"><h4>4. Kubernetes keeps copies running</h4><p>One failure does not cause an outage.</p></div>
+    <div class="card" data-show="5"><h4>5. Releases go out a little at a time</h4><p>Tested by robots. A rollback is another reviewed commit.</p></div>
+  </div>
+  <p class="sub" data-show="5"><b>Today's question:</b> what would you want to see before you let a change like this reach production?</p>
+  <aside class="notes">SAY: one sentence per card, then ask the room the closing question and take two answers before moving on.
+REMIND THEM: reviewing means reading the diff, not the title.
+CHAT CUE: none. This is the closing slide, after the last exercise. Take two answers to the question, then stop.</aside>
+</section>
