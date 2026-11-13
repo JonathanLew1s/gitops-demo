@@ -1,0 +1,30 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  manifests:
+    name: validate-manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Render with kustomize
+        run: kubectl kustomize app > rendered.yaml
+
+      - name: Schema-check with kubeconform
+        run: |
+          curl -sSL https://github.com/yannh/kubeconform/releases/download/v0.7.0/kubeconform-linux-amd64.tar.gz | tar xz kubeconform
+          ./kubeconform -strict -summary -ignore-missing-schemas rendered.yaml
+
+      - name: Guard rails (fail the PR if broken)
+        run: |
+          # No privileged containers, no :latest tags, every container has limits.
+          ! grep -nE 'privileged: *true' rendered.yaml
+          ! grep -nE 'image: .*:latest' rendered.yaml

@@ -1,12 +1,29 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
-  "enabledManagers": ["kubernetes", "kustomize"],
-  "kubernetes": { "fileMatch": ["^app/.+\\.yaml$"] },
-  "labels": ["dependencies"],
+  "extends": [
+    "config:recommended"
+  ],
+  "enabledManagers": [
+    "kubernetes",
+    "kustomize",
+    "github-actions"
+  ],
+  "kubernetes": {
+    "fileMatch": [
+      "^app/.+\\.yaml$"
+    ]
+  },
+  "labels": [
+    "dependencies"
+  ],
   "prConcurrentLimit": 5,
   "dependencyDashboard": false,
   "packageRules": [
-    { "matchManagers": ["kubernetes"], "automerge": false }
+    {
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "automerge": false
+    }
   ]
 }

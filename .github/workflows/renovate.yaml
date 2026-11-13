@@ -1,0 +1,22 @@
+name: renovate
+
+# Manual trigger during the session; Renovate opens PRs for outdated images
+# and actions. Needs a RENOVATE_TOKEN secret (fine-grained PAT, this repo only:
+# contents + pull requests write).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: renovatebot/github-action@v41.0.5
+        with:
+          configurationFile: renovate.json
+          token: ${{ secrets.RENOVATE_TOKEN }}
+        env:
+          RENOVATE_REPOSITORIES: JonathanLew1s/gitops-demo
