@@ -1,6 +1,11 @@
 {
   "parts": [
     {
+      "file": "deck-0-intro.html",
+      "title": "Git and GitHub",
+      "unlocked": true
+    },
+    {
       "file": "deck-1-git.html",
       "title": "Git",
       "unlocked": true

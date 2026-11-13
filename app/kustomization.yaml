@@ -19,6 +19,7 @@ configMapGenerator:
       - site/deck.js
       - site/deck.css
       - site/deck.json
+      - site/deck-0-intro.html
       - site/deck-1-git.html
       - site/deck-2-lifecycle.html
       - site/deck-3-k8s.html
