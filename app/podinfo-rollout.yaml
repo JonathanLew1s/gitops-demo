@@ -52,6 +52,7 @@ spec:
           ports:
             - name: http
               containerPort: 9898
+              protocol: TCP   # the Rollouts controller writes this default back; declare it so Argo sees no drift
           readinessProbe:
             httpGet:
               path: /readyz
