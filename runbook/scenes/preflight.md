@@ -25,7 +25,7 @@ kubectl -n argocd get application gitops-demo gitops-demo-platform --no-headers 
 kubectl -n $NS get pods --no-headers | awk '{print $1,$2,$3}'                                              # 1 web, 1 podinfo, 1/1 Running
 kubectl -n $NS get rollout podinfo -o jsonpath='{.spec.replicas} {.status.phase}{"\n"}'                  # 1 Healthy
 kubectl -n $NS describe resourcequota platform-quota | grep pods                                           # pods used/6
-curl -s $SITE/api/ | jq -c '{version,color,message}'                                                       # 6.5.0, red, v1
+curl -s -A 'Mozilla/5.0' -H 'X-Track: auto' $SITE/api/ | jq -c '{version,color,message}'                       # 6.5.0, red, v1 (a browser User-Agent: this is what the page sends)
 curl -s $SITE/chapters.json | jq '[.chapters[].unlocked]'                                                  # only chapter 0 true
 kubectl -n $NS get secret demo-fake 2>&1 | grep -c NotFound                                                # 1
 curl -s -o /dev/null -w '%{http_code}\n' 'https://api.github.com/repos/$DEMO_REPO_SLUG/pulls?per_page=1'  # 200 (the slide ticker needs this)
