@@ -20,8 +20,7 @@ async function pollBackend() {
     pods.set(j.hostname, { version: j.version, color: j.color, message: j.message, seen: Date.now() });
     podinfoVersion = j.version;
     history.push({ ok: true, version: j.version, color: j.color });
-    const m = /nginx\/([\w.]+)/.exec(r.headers.get('server') || '');
-    if (m) nginxVersion = m[1];
+    nginxVersion = r.headers.get('x-web-version') || (/nginx\/([\w.]+)/.exec(r.headers.get('server') || '') || [])[1] || nginxVersion;
     $('live').className = 'live ok';
     $('live-text').textContent = 'live · answered by ' + j.hostname;
     $('b-version').textContent = 'backend v' + j.version;
