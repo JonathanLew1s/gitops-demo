@@ -25,7 +25,7 @@ code.cmd { background: var(--bg); border: 1px solid var(--line); border-radius: 
 .term { background: #0b0d18; color: #d6e2ff; border: 1px solid var(--line); border-radius: 10px; padding: 1.4vh 1.4vw; font: clamp(.95rem, 1.6vw, 1.3rem)/1.6 ui-monospace, monospace; }
 .term .p { color: #6ea8ff; user-select: none; } .term .c { color: #7f8bb3; }
 /* git graph */
-.graph svg { width: 100%; height: auto; max-height: 30vh; display: block; }
+.graph svg { width: 100%; height: auto; max-height: 38vh; display: block; }
 .graph text { font-family: ui-monospace, monospace; }
 /* flows */
 .flow { list-style: none; display: flex; flex-wrap: wrap; gap: 1.2vh 1vw; padding: 0; margin: 0; counter-reset: s; }
@@ -92,3 +92,10 @@ body.notes .slide.active .notes { display: block; position: absolute; left: 3vw;
 table.cmp td.then { color: var(--dim); } table.cmp td.now { color: var(--text); }
 table.cmp th.then { color: var(--dim); } table.cmp th.now { color: var(--ok); }
 .tagline { font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.7rem); }
+
+.diff .file { color: var(--dim); margin-bottom: .6vh; }
+.diff .add { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.diff .add::before { content: "+ "; } .diff .rem::before { content: "- "; }
+.diff .rem { color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, transparent); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--bad) 60%, transparent); }
+.diff div:not(.file):not(.add):not(.rem)::before { content: "  "; white-space: pre; }
+.hint { color: var(--dim); }

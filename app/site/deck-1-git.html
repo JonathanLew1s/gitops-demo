@@ -19,6 +19,31 @@ CHAT CUE: none. Just open demo.instagib.co.uk on a second screen.</aside>
 SECURITY ANGLE: "who, when, why" is the audit trail an auditor asks for. Git gives it by default.</aside>
 </section>
 
+<section class="slide" data-id="what-is-git" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git</div>
+  <h2>What is Git?</h2>
+  <p class="sub">A tool that remembers every version of your files: what changed, who changed it, when, and why.</p>
+  <div class="cols">
+    <div class="term diff">
+      <div class="file mono">firewall.rules</div>
+      <div>allow web-01 → db-01   port 5432</div>
+      <div class="rem" data-show="1">allow web-01 → cache-01 port 6379</div>
+      <div class="add" data-show="1">allow web-01 → cache-01 port 6380</div>
+      <div class="add" data-show="1">allow web-02 → db-01   port 5432</div>
+    </div>
+    <div class="card" data-show="2"><h4>The label on that change</h4><p><b>Who:</b> an engineer<br><b>When:</b> Tuesday, 14:02<br><b>Why:</b> "Open DB access for the new web server; move cache off the old port"</p><p class="hint">Written by the person making the change, kept with it forever.</p></div>
+  </div>
+  <div class="cols" data-show="3">
+    <div class="card"><h4>Snapshots, not surveillance</h4><p>Git doesn't watch you type. <b>You</b> choose when to save a snapshot (a commit).</p></div>
+    <div class="card"><h4>Differences on demand</h4><p>It compares two snapshots and shows exactly what changed, line by line. Red out, green in.</p></div>
+    <div class="card"><h4>Nothing is lost</h4><p>Every earlier snapshot is still there. Go back to how it was last Tuesday in seconds.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>Word's "Track Changes", but for any file, the whole folder, kept forever, and impossible to quietly rewrite.</div>
+  <aside class="notes">SAY: forget the jargon for a minute. Git is "Track Changes" for a whole folder. You decide when to take a snapshot; Git can then show you the difference between any two.
+Press → once: the red and green lines are the change. Press again: the label (who, when, why) travels with it. Press again: the three ideas to remember.
+BRIDGE: next slides show how those snapshots chain together.</aside>
+</section>
+
 <section class="slide" data-id="commit" data-part="Git" data-steps="3">
   <div class="part">Part 1 · Git</div>
   <h2>A commit is a snapshot with a name tag</h2>
