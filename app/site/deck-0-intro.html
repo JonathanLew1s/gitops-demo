@@ -1,0 +1,122 @@
+<section class="slide" data-id="problem" data-part="Git and GitHub" data-steps="3">
+  <div class="part">Start here · Git and GitHub</div>
+  <h2>The question Git answers</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Before</h4><p class="mono">firewall_rules_FINAL_v2_REAL.xlsx</p><p>Emailed. Edited on a share. Nobody knows which copy is live.</p></div>
+    <div class="card" data-show="2"><h4>The audit question</h4><p>Who changed it? When? <b>Why?</b> And can we get back to how it was on Tuesday?</p></div>
+    <div class="card" data-show="3"><h4>With Git</h4><p>Every change is recorded with its author, time and reason, <b>forever</b>, and any earlier state can be restored in seconds.</p></div>
+  </div>
+  <aside class="notes">SAY: Git was built for source code, but it is really a tamper-evident log of changes to any text. Infrastructure is now text (YAML), so it applies directly.
+SECURITY ANGLE: "who, when, why" is the audit trail an auditor asks for. Git gives it by default.</aside>
+</section>
+
+<section class="slide" data-id="read-a-diff" data-part="Git and GitHub" data-steps="4">
+  <div class="part">Start here · Git and GitHub</div>
+  <h2>How to read a change: red out, green in</h2>
+  <div class="cols">
+    <div class="term diff">
+      <div class="file mono">firewall.rules</div>
+      <div>allow web-01 → db-01   port 5432</div>
+      <div class="rem" data-show="1">allow web-01 → cache-01 port 6379</div>
+      <div class="add" data-show="2">allow web-01 → cache-01 port 6380</div>
+      <div class="add" data-show="3">allow web-02 → db-01   port 5432</div>
+    </div>
+    <div>
+      <div class="card" data-show="1"><h4>Red, with a minus: what was there before</h4><p>The old value. It is being taken away.</p></div>
+      <div class="card" data-show="2"><h4>Green, with a plus: what is there now</h4><p>The new value. Red then green means the line was <b>changed</b>: the web-to-cache connection moved from port 6379 to port 6380.</p></div>
+      <div class="card" data-show="3"><h4>A green line on its own is something new</h4><p>web-02 may now reach the database. Nothing was removed, something was added.</p></div>
+    </div>
+  </div>
+  <p class="sub" data-show="4"><b>The plain lines did not change.</b> A reviewer only reads the red and the green: that is the whole change, however big the file.</p>
+  <div class="iaas"><b>In the VM world</b>The change request says "update the firewall". You find out what that meant by comparing two spreadsheets by eye, or after something breaks.</div>
+  <aside class="notes">SAY: before anything else, learn to read this. Red is what was there. Green is what is there now. That is all a diff is.
+Press → once per card: the red line, the green line (a changed rule is a red line followed by a green line), then the lone green line (a new rule).
+WHY IT MATTERS: every review you do today is reading a diff. If you can read this, you can review a change to production.
+ASK THE ROOM: "what changed here?" before pressing the last step.</aside>
+</section>
+
+<section class="slide" data-id="what-is-git" data-part="Git and GitHub" data-steps="3">
+  <div class="part">Start here · Git and GitHub</div>
+  <h2>What is Git?</h2>
+  <p class="sub">A tool that remembers every version of your files: what changed, who changed it, when, and why.</p>
+  <div class="cols">
+    <div class="term diff">
+      <div class="file mono">firewall.rules</div>
+      <div>allow web-01 → db-01   port 5432</div>
+      <div class="rem" data-show="1">allow web-01 → cache-01 port 6379</div>
+      <div class="add" data-show="1">allow web-01 → cache-01 port 6380</div>
+      <div class="add" data-show="1">allow web-02 → db-01   port 5432</div>
+    </div>
+    <div class="card" data-show="2"><h4>The label on that change</h4><p><b>Who:</b> an engineer<br><b>When:</b> Tuesday, 14:02<br><b>Why:</b> "Open DB access for the new web server; move cache off the old port"</p><p class="hint">Written by the person making the change, kept with it forever.</p></div>
+  </div>
+  <div class="cols" data-show="3">
+    <div class="card"><h4>Snapshots, not surveillance</h4><p>Git doesn't watch you type. <b>You</b> choose when to save a snapshot (a commit).</p></div>
+    <div class="card"><h4>Differences on demand</h4><p>It compares two snapshots and shows exactly what changed, line by line. Red out, green in.</p></div>
+    <div class="card"><h4>Nothing is lost</h4><p>Every earlier snapshot is still there. Go back to how it was last Tuesday in seconds.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>Word's "Track Changes", but for any file, the whole folder, kept forever, and impossible to quietly rewrite.</div>
+  <aside class="notes">SAY: forget the jargon for a minute. Git is "Track Changes" for a whole folder. You decide when to take a snapshot; Git can then show you the difference between any two.
+Press → once: the red and green lines are the change. Press again: the label (who, when, why) travels with it. Press again: the three ideas to remember.
+BRIDGE: next slides show how those snapshots chain together.</aside>
+</section>
+
+<section class="slide" data-id="github-around" data-part="Git and GitHub" data-steps="4">
+  <div class="part">Start here · Git and GitHub</div>
+  <h2>Git keeps the history. GitHub puts rules, robots and connections around it.</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Actions: robots on every change</h4><p>Check your standards. Catch a secret or personal data before it is saved. Build the new image. Run tests, scans, deployments.</p></div>
+    <div class="card" data-show="2"><h4>Audit: every step recorded</h4><p>Each change, approval, comment and permission change is logged and searchable.</p></div>
+  </div>
+  <div class="cols">
+    <div class="card" data-show="3"><h4>Integrations: tools that react</h4><p>Chat, ticketing, scanners and the platform itself plug in and respond to changes.</p></div>
+    <div class="card" data-show="4"><h4>Control: who may change what</h4><p>Required approvals, protected branches, rules nobody can quietly bypass.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>Someone logs into the test server (which everyone pretends matches prod) and clicks Next, Next, Next through the installer, hoping for the same result as dev. Here the steps run as code, every time: different people, same outcome.</div>
+  <aside class="notes">SAY: Git is the notebook. GitHub is the office around it: the robots, the minutes, the plug-ins and the rules.
+THE POINT: people vary, they get tired, they miss things. A process plus automation takes that variation out of the result.
+OPTIONAL HINT (do not go deep): checks can also run on your own machine before you even push (pre-commit).
+BUILD IS A SLIDE ONLY: this demo has no image build; the checks you will see are standards and secrets.</aside>
+</section>
+
+<section class="slide" data-id="see-all-four" data-part="Git and GitHub" data-steps="4">
+  <div class="part">Start here · Git and GitHub</div>
+  <h2>You will see all four today</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Actions</h4><p>The <span class="mono">validate-manifests</span> robot that checks every change before a person looks.</p></div>
+    <div class="card" data-show="2"><h4>Audit</h4><p>The pull request history: who proposed, who approved, and when.</p></div>
+    <div class="card" data-show="3"><h4>Integrations</h4><p>Argo CD watching this repository and applying what it finds.</p></div>
+    <div class="card" data-show="4"><h4>Control</h4><p>The approval gate: nobody ships their own change.</p></div>
+  </div>
+  <aside class="notes">SAY: a map for the day. When one of these appears, point back to this slide.
+CHAT CUE: none.</aside>
+</section>
+
+<section class="slide yourturn" data-id="turn-0a" data-part="Git and GitHub" data-steps="4">
+  <div class="part">Your turn · about 8 minutes · on your own device</div>
+  <h2>Read the history, then trip a robot</h2>
+  <div class="turn">
+    <p class="mono">github.com/JonathanLew1s/gitops-practice</p>
+    <ol>
+      <li data-show="1">Open <b>config/shop.yaml</b>, then click <b>History</b>.</li>
+      <li data-show="2"><b>Who</b> changed the number of copies, and <b>why</b>? Read the red and the green.</li>
+      <li data-show="3">Open the <b>Actions</b> tab. Which two checks ran on the latest change?</li>
+      <li data-show="4">Stretch: in the web editor, add <span class="mono">api_key: FAKE-TOKEN-DO-NOT-USE-1234</span> to shop.yaml and open a pull request. Which check fails, and what does it tell you? Then remove the line.</li>
+    </ol>
+  </div>
+  <aside class="notes">NOBODY INSTALLS ANYTHING. Reading a public repository needs no login.
+STRETCH NEEDS WRITE ACCESS: add the volunteers as collaborators on gitops-practice first (gh api -X PUT repos/JonathanLew1s/gitops-practice/collaborators/USER -f permission=push). A pull request from a fork waits for a maintainer to approve the robots.
+USE ONLY THE FAKE VALUE. Nothing real goes into the repository.
+EXPECT: the secrets check fails with a line number and a plain message; standards stays green. Removing the line turns it green.
+CHAT CUE: none until the stretch; then ask Claude to add the volunteers.</aside>
+</section>
+
+<section class="slide" data-id="refresher-0a" data-part="Git and GitHub" data-steps="3">
+  <div class="part">Refresher · Git and GitHub</div>
+  <h2>Before we move on</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Read a diff</h4><p>Red is what was there. Green is what is there now.</p></div>
+    <div class="card" data-show="2"><h4>Git keeps the history</h4><p>Who, when and why, for every change, forever.</p></div>
+    <div class="card" data-show="3"><h4>GitHub adds the rest</h4><p>Robots, a record, connections and rules: so different people get the same outcome.</p></div>
+  </div>
+  <aside class="notes">One sentence per card, then straight on to the next section.</aside>
+</section>
