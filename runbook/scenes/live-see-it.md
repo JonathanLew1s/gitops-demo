@@ -22,9 +22,9 @@ kubectl -n $NS get pods
 Advance one step per cue; explain each output in one sentence.
 1. `kubectl get nodes` — the servers (the cluster)
 2. `kubectl -n $NS get pods` — the running copies (the tiles)
-3. `kubectl -n $NS get replicasets` — the supervisor and its count
-4. `kubectl -n $NS get service` — the front desk
-5. `kubectl -n $NS describe resourcequota` — the department budget
+3. `kubectl -n $NS get replicasets` — the controller that keeps the count
+4. `kubectl -n $NS get service` — the stable address for the pods
+5. `kubectl -n $NS describe resourcequota` — the namespace limits (quota)
 
 ## See
 Each answer lines up with a tile, a count or a limit on the lesson page.

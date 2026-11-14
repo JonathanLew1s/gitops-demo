@@ -44,10 +44,10 @@ TONE: no jargon police. If someone says "container" or "pod" loosely, that is fi
     <div class="kpod" data-at='{"2":"gone","3":"new"}'>2</div>
     <div class="kpod">3</div>
   </div>
-  <p class="cap" data-caps='["The instruction (a Deployment) says: keep 3 identical copies of version 2 running.","A supervisor, the ReplicaSet, counts them continuously.","One copy crashes. The count is now 2, not 3.","The supervisor starts a replacement within seconds. Nobody was paged.","Want more? Change 3 to 5. The same supervisor does the rest."]'></p>
+  <p class="cap" data-caps='["The instruction (a Deployment) says: keep 3 identical copies of version 2 running.","The ReplicaSet counts them continuously.","One copy crashes. The count is now 2, not 3.","The ReplicaSet starts a replacement within seconds. Nobody was paged.","Want more? Change 3 to 5. The same ReplicaSet does the rest."]'></p>
   <div class="cols">
     <div class="card"><h4>Deployment</h4><p>"I want N copies of this version." The instruction.</p></div>
-    <div class="card"><h4>ReplicaSet</h4><p>The supervisor that keeps the headcount right.</p></div>
+    <div class="card"><h4>ReplicaSet</h4><p>The controller that keeps the number of copies at the number you asked for.</p></div>
     <div class="card"><h4>Replicas</h4><p>The identical copies. More than one means no single point of failure.</p></div>
   </div>
   <div class="iaas"><b>In the VM world</b>Several identical VMs behind a load balancer, except the platform builds, counts and replaces them for you.</div>
@@ -74,7 +74,7 @@ TONE: no jargon police. If someone says "container" or "pod" loosely, that is fi
   <div class="triad">
     <div class="card" data-show="0"><h4>You</h4><p>always call the same address</p></div>
     <div class="arrow">→</div>
-    <div class="card" data-show="1" style="border-color:var(--accent)"><h4>Service</h4><p>the front desk</p></div>
+    <div class="card" data-show="1" style="border-color:var(--accent)"><h4>Service</h4><p>a stable address for the pods behind it</p></div>
     <div class="arrow" data-show="1">→</div>
     <div class="card" data-show="2"><h4>Any healthy pod</h4><p>pods come and go behind it</p></div>
   </div>
@@ -128,7 +128,7 @@ CHAT CUE: "Claude, show that a Secret is just base64, using a fake value, then d
     <tr data-show="1"><td><b>Cluster</b></td><td>The whole data centre as one computer</td><td>4 small machines</td></tr>
     <tr data-show="2"><td><b>Node</b></td><td>One server in it</td><td>the machines pods land on</td></tr>
     <tr data-show="3"><td><b>Pod</b></td><td>One running copy of an app</td><td>the tiles on the page</td></tr>
-    <tr data-show="4"><td><b>Replicas / ReplicaSet</b></td><td>How many copies / the supervisor who keeps the count</td><td>1, then 2, then more</td></tr>
+    <tr data-show="4"><td><b>Replicas / ReplicaSet</b></td><td>How many copies / the controller that keeps the count</td><td>1, then 2, then more</td></tr>
     <tr data-show="5"><td><b>Namespace</b></td><td>A department's space, with its own budget and rules</td><td><span class="mono">gitops-demo</span></td></tr>
     <tr data-show="6"><td><b>PVC / PV</b></td><td>The storage request / the real disk</td><td>the notes volume (backup scene)</td></tr>
     <tr data-show="7"><td><b>Secret</b></td><td>A protected setting, never plain text in git</td><td>none in this public repo</td></tr>

@@ -13,26 +13,27 @@ NEXT: two quick slides in plain terms, because the words are not obvious.</aside
 </section>
 
 <section class="slide" data-id="eli5-git" data-part="Welcome" data-steps="3">
-  <div class="part">In plain terms · Git and GitHub</div>
-  <h2>Git is a notebook that never forgets. GitHub is the office around it.</h2>
+  <div class="part">The basics · Git and GitHub</div>
+  <h2>Git tracks every change. GitHub secures and automates the work around it.</h2>
   <div class="cols">
-    <div class="card" data-show="1"><h4>Git</h4><p>Imagine a folder where every save is stamped: <b>who</b> changed what, <b>when</b>, and <b>why</b>. You can compare any two versions, and go back to any of them.</p></div>
-    <div class="card" data-show="2"><h4>GitHub</h4><p>The shared office where those folders live. People <b>propose</b> changes, others <b>review</b> them, robots <b>check</b> them, and the whole record is kept.</p></div>
+    <div class="card" data-show="1"><h4>Git</h4><p>A <b>version control</b> system. It tracks every change, made by anyone, across a codebase of files: what changed, who changed it, when and why. Any earlier version can be compared or restored.</p></div>
+    <div class="card" data-show="2"><h4>GitHub: secure</h4><p>A cloud platform that extends Git. It controls who can change what, requires reviews and approvals, and keeps an audit trail.</p></div>
+    <div class="card" data-show="3"><h4>GitHub: automate</h4><p>It runs tasks on every change, such as checking code against your standards, scanning for secrets and personal data, building images and deploying.</p></div>
   </div>
-  <div class="iaas" data-show="3"><b>In the VM world</b>Think of the change ticket, the spreadsheet, the approval email and the CAB minutes: all in one place, and tied to exactly what changed.</div>
-  <aside class="notes">SAY: do not worry about the words. A notebook with a stamped page for every edit, and an office where the notebooks are shared and checked. We will spend the morning on this.</aside>
+  <div class="iaas"><b>In the VM world</b>The change ticket, the spreadsheet, the approval email and the CAB minutes, recorded together and tied to exactly what changed.</div>
+  <aside class="notes">SAY: definitions, not analogies. Git is version control. GitHub adds security and automation on top. We spend the morning on this.</aside>
 </section>
 
-<section class="slide" data-id="eli5-k8s" data-part="Welcome" data-steps="4">
-  <div class="part">In plain terms · Kubernetes and GitOps</div>
-  <h2>Kubernetes runs your applications. GitOps means Git tells it how.</h2>
+<section class="slide" data-id="eli5-k8s" data-part="Welcome" data-steps="3">
+  <div class="part">The basics · Kubernetes and GitOps</div>
+  <h2>Kubernetes runs applications from a description. GitOps keeps that description in Git.</h2>
   <div class="cols">
-    <div class="card" data-show="1"><h4>Kubernetes</h4><p>A pool of computers you give instructions to: <b>"keep three copies of this running"</b>. It makes that true, and keeps it true.</p></div>
-    <div class="card" data-show="2"><h4>It looks after them</h4><p>If a copy fails it starts another. If a computer dies the work moves. Like a manager who keeps the right number of staff on shift.</p></div>
-    <div class="card" data-show="3"><h4>GitOps</h4><p>Those instructions are <b>files in Git</b>. Change the file, and the platform follows. Nobody types commands on the servers.</p></div>
+    <div class="card" data-show="1"><h4>Kubernetes</h4><p>A platform that runs applications across a pool of servers. You declare the <b>desired state</b>, for example three copies of version 2. Kubernetes continuously makes the <b>actual state</b> match it.</p></div>
+    <div class="card" data-show="2"><h4>What it does for you</h4><p>It decides where each application runs, restarts failed copies, scales up and down, and rolls out updates a little at a time.</p></div>
+    <div class="card" data-show="3"><h4>GitOps</h4><p>An operating model where the desired state is <b>stored in Git</b>. Changes are made by pull request, reviewed, and applied automatically. Git is the source of truth.</p></div>
   </div>
-  <div class="iaas" data-show="4"><b>In the VM world</b>You build a server, install by hand, and hope test matches prod. Here you describe the result once, and the platform does it the same way every time.</div>
-  <aside class="notes">SAY: you do not need the vocabulary yet. Three ideas: a pool of computers, you say what you want, and the instructions live in Git. The afternoon fills in the detail.
+  <div class="iaas"><b>In the VM world</b>You build a server, install by hand, and hope test matches prod. Here you describe the result once, and the platform does it the same way every time.</div>
+  <aside class="notes">SAY: three ideas. A pool of servers, you declare what you want, and the declaration lives in Git. The afternoon fills in the detail.
 BRIDGE: next, this is interactive, so we need everyone on GitHub.</aside>
 </section>
 
