@@ -24,16 +24,20 @@ NEXT: two quick slides in plain terms, because the words are not obvious.</aside
   <aside class="notes">SAY: definitions, not analogies. Git is version control. GitHub adds security and automation on top. We spend the morning on this.</aside>
 </section>
 
-<section class="slide" data-id="eli5-k8s" data-part="Welcome" data-steps="3">
+<section class="slide" data-id="eli5-k8s" data-part="Welcome" data-steps="5">
   <div class="part">The basics · Kubernetes and GitOps</div>
-  <h2>Kubernetes runs applications from a description. GitOps keeps that description in Git.</h2>
+  <h2>Kubernetes: a hosting platform for container-based workloads</h2>
   <div class="cols">
-    <div class="card" data-show="1"><h4>Kubernetes</h4><p>A platform that runs applications across a pool of servers. You declare the <b>desired state</b>, for example three copies of version 2. Kubernetes continuously makes the <b>actual state</b> match it.</p></div>
-    <div class="card" data-show="2"><h4>What it does for you</h4><p>It decides where each application runs, restarts failed copies, scales up and down, and rolls out updates a little at a time.</p></div>
-    <div class="card" data-show="3"><h4>GitOps</h4><p>An operating model where the desired state is <b>stored in Git</b>. Changes are made by pull request, reviewed, and applied automatically. Git is the source of truth.</p></div>
+    <div class="card" data-show="1"><h4>What it is</h4><p>An open-source infrastructure platform for hosting containerised applications. Created by Google, now maintained by the open-source community.</p></div>
+    <div class="card" data-show="2"><h4>What it does</h4><p>You declare the <b>desired state</b>, for example three copies of version 2. It schedules, restarts, scales and updates workloads to keep the <b>actual state</b> matching it.</p></div>
+    <div class="card" data-show="3"><h4>What comes with it</h4><p><b>Built in:</b> load balancing, secrets, scaling, self-healing. <b>Standard add-ons:</b> certificate management, observability and more.</p></div>
+    <div class="card" data-show="4"><h4>Where it runs</h4><p>Your own data centre, or managed on Azure, Google Cloud and AWS. The same platform everywhere.</p></div>
   </div>
+  <p class="sub" data-show="5"><b>GitOps</b> is how we operate it: the desired state is stored in Git, changes are made by pull request, and Git is the source of truth.</p>
   <div class="iaas"><b>In the VM world</b>You build a server, install by hand, and hope test matches prod. Here you describe the result once, and the platform does it the same way every time.</div>
-  <aside class="notes">SAY: three ideas. A pool of servers, you declare what you want, and the declaration lives in Git. The afternoon fills in the detail.
+  <aside class="notes">SAY: what it is, what it does, what comes with it, where it runs.
+ACCURACY: load balancing (Services), secrets and scaling are part of Kubernetes itself. Certificate management (cert-manager) and observability (metrics, logs, traces) are standard add-ons that almost every cluster installs; ours runs cert-manager. Say "add-ons" if asked.
+HOSTING: this cluster runs on our own hardware. The same manifests run on Azure (AKS), Google Cloud (GKE) and AWS (EKS).
 BRIDGE: next, this is interactive, so we need everyone on GitHub.</aside>
 </section>
 
