@@ -23,7 +23,7 @@ git rev-parse --short $RESTORE_TAG
 1. Demo repo: `git switch -c reset-all && git restore --source=$RESTORE_TAG --staged --worktree app` then `git diff --cached --stat`. If empty, nothing to do. Otherwise commit, push, `gh pr create --fill`, `gh pr checks --watch`, `gh pr merge --squash --delete-branch`, refresh Argo.
 2. If a canary is paused: run the promote command in env.md.
 3. Platform quota: if `kubectl -n $NS get resourcequota platform-quota -o jsonpath='{.spec.hard.pods}'` is not 6, set `pods: "6"` in `$PLATFORM_QUOTA_FILE` through a PR in the platform repo (separate worktree), merge, refresh.
-4. Remove leftovers: `kubectl -n $NS delete secret demo-fake --ignore-not-found`.
+4. Remove leftovers: `kubectl -n $NS delete secret demo-fake --ignore-not-found` and `kubectl -n $NS delete configmap roster --ignore-not-found` (the session roster: names and handles).
 5. If you added collaborators or a ruleset in a rehearsal, remove them in the repo settings.
 
 ## See

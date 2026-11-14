@@ -117,3 +117,15 @@ table.cmp th.then { color: var(--dim); } table.cmp th.now { color: var(--ok); }
 #scene .livesteps { margin: .5vh 0 0 1.2em; padding: 0; columns: 2; column-gap: 2vw; }
 #scene .livesteps li { break-inside: avoid; margin: .2vh 0; }
 body.has-live .slide { padding-bottom: 24vh; }
+
+/* cast: who plays which role, and their scripted steps */
+.cast { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2vw; margin-top: 1vh; }
+.castcard { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 1.2vh 1.2vw; font-size: clamp(.9rem, 1.4vw, 1.2rem); }
+.castcard .role { color: var(--accent); text-transform: uppercase; letter-spacing: .06em; font-size: .75em; }
+.castcard .pname { font-size: 1.5em; font-weight: 700; margin: .2vh 0; }
+.castcard .handle { color: var(--dim); font-size: .85em; }
+.castcard ol { margin: 1vh 0 0 1.1em; padding: 0; }
+.castcard li { margin: .6vh 0; }
+.castcard.empty { opacity: .45; border-style: dashed; }
+.crowd { display: flex; flex-wrap: wrap; gap: .6vw; margin-top: 1.2vh; }
+.crowd .chip { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: .5vh 1vw; font-size: clamp(.85rem, 1.3vw, 1.1rem); }

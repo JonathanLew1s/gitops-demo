@@ -9,6 +9,31 @@ const REPO = 'https://github.com/JonathanLew1s/gitops-demo';
 const cue = (id) => `Run scene ${id}`;
 const maxStep = (s) => +(s.dataset.steps || 0);
 
+// ---------- cast: names from the session roster ----------
+// The roster is a ConfigMap written by the assistant at the start of the day (not in git).
+// Slides never hard-code a person: [data-role] spans and .cast panels read it live.
+const ROLES = [['author', 'Author'], ['reviewer-1', 'Reviewer 1'], ['reviewer-2', 'Reviewer 2'], ['owner', 'Owner']];
+let roster = {};
+async function loadRoster() {
+  try { const r = await fetch('/roster.json', { cache: 'no-store' }); roster = r.ok ? await r.json() : {}; } catch (e) { roster = {}; }
+}
+const who = (role) => (roster.roles || {})[role];
+function personalise(root) {
+  $$('[data-role]', root).forEach((el) => { const p = who(el.dataset.role); el.textContent = p ? p.name : (ROLES.find((r) => r[0] === el.dataset.role) || [0, el.dataset.role])[1]; });
+  $$('.cast', root).forEach((c) => {
+    const steps = JSON.parse(c.closest('section').dataset.cast || '{}');
+    c.innerHTML = ROLES.map(([k, label]) => {
+      const p = who(k);
+      return `<div class="castcard${p ? '' : ' empty'}"><div class="role">${esc(label)}</div><div class="pname">${p ? esc(p.name) : 'Volunteer needed'}</div>${p && p.github ? `<div class="handle mono">@${esc(p.github)}</div>` : ''}${(steps[k] || []).length ? `<ol>${steps[k].map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : ''}</div>`;
+    }).join('');
+  });
+  $$('.crowd', root).forEach((c) => {
+    const ps = roster.people || [];
+    c.innerHTML = ps.length ? ps.map((p) => `<span class="chip">${esc(p.name)} <span class="mono">@${esc(p.github || '')}</span></span>`).join('') : '<span class="hint">Names appear here as people join.</span>';
+  });
+}
+setInterval(async () => { const s = slides[idx]; if (s && (s.querySelector('.cast') || s.querySelector('.crowd') || s.querySelector('[data-role]'))) { await loadRoster(); personalise(s); } }, 5000);
+
 // ---------- git graph ----------
 const LANE_COLORS = ['#6ea8ff', '#3ddc97', '#ffb454', '#c792ea', '#ff6b6b'];
 function hash(s) { let h = 5381; for (const ch of s) h = ((h << 5) + h + ch.charCodeAt(0)) >>> 0; return h.toString(16).padStart(8, '0').slice(0, 7); }
@@ -139,6 +164,7 @@ function render() {
   $$('.graph', s).forEach((g) => drawGraph(g, JSON.parse(g.dataset.ops), step));
   $$('.cap', s).forEach((c) => { const caps = JSON.parse(c.dataset.caps || '[]'); c.textContent = caps[Math.min(step, caps.length - 1)] || ''; });
   $$('.ticker', s).forEach((t) => { if (!t.dataset.loaded) { t.dataset.loaded = 1; loadTicker(t); } });
+  personalise(s);
   const sc = $('#scene');
   if (s.dataset.scene) {
     const id = s.dataset.scene;
@@ -193,6 +219,7 @@ document.addEventListener('touchend', (e) => { if (touchX === null) return; cons
   const cfg = await (await fetch('/deck.json', { cache: 'no-store' })).json();
   const parts = cfg.parts.filter((p) => p.unlocked);
   const html = await Promise.all(parts.map((p) => fetch('/' + p.file, { cache: 'no-store' }).then((r) => r.text())));
+  await loadRoster();
   $('#deck').innerHTML = html.join('');
   slides = $$('section.slide');
   const h = location.hash.slice(1);

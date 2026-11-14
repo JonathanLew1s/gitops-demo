@@ -1,0 +1,14 @@
+{
+  "roles": {
+    "author":     { "name": "Ana", "github": "ana-example" },
+    "reviewer-1": { "name": "Ben", "github": "ben-example" },
+    "reviewer-2": { "name": "Cleo", "github": "cleo-example" },
+    "owner":      { "name": "Dev", "github": "dev-example" }
+  },
+  "people": [
+    { "name": "Ana", "github": "ana-example" },
+    { "name": "Ben", "github": "ben-example" },
+    { "name": "Cleo", "github": "cleo-example" },
+    { "name": "Dev", "github": "dev-example" }
+  ]
+}

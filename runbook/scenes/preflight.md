@@ -28,6 +28,7 @@ kubectl -n $NS describe resourcequota platform-quota | grep pods                
 curl -s -A 'Mozilla/5.0' -H 'X-Track: auto' $SITE/api/ | jq -c '{version,color,message}'                       # 6.5.0, red, v1 (a browser User-Agent: this is what the page sends)
 curl -s $SITE/chapters.json | jq '[.chapters[].unlocked]'                                                  # only chapter 0 true
 kubectl -n $NS get secret demo-fake 2>&1 | grep -c NotFound                                                # 1
+kubectl -n $NS get configmap roster 2>&1 | grep -c NotFound                                                # 1 (no roster left from a previous session)
 curl -s -o /dev/null -w '%{http_code}\n' 'https://api.github.com/repos/$DEMO_REPO_SLUG/pulls?per_page=1'  # 200 (the slide ticker needs this)
 cd $DEMO_REPO && git fetch -q --tags && git switch main && git pull --ff-only && git diff $RESTORE_TAG --stat -- app | tail -1   # empty: matches the restore point
 gh api repos/$DEMO_REPO_SLUG/rulesets --jq length ; gh api repos/$DEMO_REPO_SLUG/collaborators --jq '[.[].login]'   # note what is set up
