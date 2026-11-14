@@ -129,3 +129,9 @@ body.has-live .slide { padding-bottom: 24vh; }
 .castcard.empty { opacity: .45; border-style: dashed; }
 .crowd { display: flex; flex-wrap: wrap; gap: .6vw; margin-top: 1.2vh; }
 .crowd .chip { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: .5vh 1vw; font-size: clamp(.85rem, 1.3vw, 1.1rem); }
+
+.avatar { position: relative; display: inline-block; width: 2.2em; height: 2.2em; border-radius: 50%; overflow: hidden; vertical-align: middle; background: var(--accent); color: var(--bg, #0b1020); text-align: center; line-height: 2.2em; font-size: 1em; }
+.avatar b { position: absolute; inset: 0; }
+.avatar img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.castcard .avatar { width: 4em; height: 4em; line-height: 4em; font-size: 1.1em; margin-bottom: .6vh; }
+.castcard .avatar b { font-size: 1.6em; }

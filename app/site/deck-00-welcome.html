@@ -1,28 +1,54 @@
-<section class="slide title" data-id="welcome" data-part="Welcome">
+<section class="slide title" data-id="welcome" data-part="Welcome" data-steps="3">
   <div class="part">A day with Git, GitOps &amp; Kubernetes</div>
-  <h2>Today you will change a real system,<br>and watch it change</h2>
+  <h2>The aim of the day</h2>
+  <p class="sub">To see how a modern team changes a live system: safely, visibly, and with nobody logging into a server.</p>
   <div class="cols">
-    <div class="card"><h4>Morning: Git</h4><p>How changes are recorded, reviewed, checked by robots and undone.</p></div>
-    <div class="card"><h4>Afternoon: Kubernetes</h4><p>How a platform runs what the files say, and keeps it that way.</p></div>
-    <div class="card"><h4>How it works</h4><p>Four of you play roles in each exercise while everyone watches. Roles rotate. Nothing to install.</p></div>
+    <div class="card" data-show="1"><h4>See</h4><p>A change proposed, checked by robots, approved by people, and applied by the platform.</p></div>
+    <div class="card" data-show="2"><h4>Do</h4><p>Make real changes yourselves. Four of you play roles in each exercise while everyone watches.</p></div>
+    <div class="card" data-show="3"><h4>Judge</h4><p>Decide what you would want to see before you trusted this way of working.</p></div>
   </div>
-  <aside class="notes">SAY: this is a show-and-tell, not a course in tools. You will see real changes on a real system. Nobody needs Git on their laptop.
-NEXT: get everyone onto GitHub.</aside>
+  <aside class="notes">SAY: this is not a course in tools. Nobody needs Git on their laptop and nobody is expected to start using any of this tomorrow. The goal is to see what is possible and form your own view.
+MORNING: Git. AFTERNOON: Kubernetes.
+NEXT: two quick slides in plain terms, because the words are not obvious.</aside>
+</section>
+
+<section class="slide" data-id="eli5-git" data-part="Welcome" data-steps="3">
+  <div class="part">In plain terms · Git and GitHub</div>
+  <h2>Git is a notebook that never forgets. GitHub is the office around it.</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Git</h4><p>Imagine a folder where every save is stamped: <b>who</b> changed what, <b>when</b>, and <b>why</b>. You can compare any two versions, and go back to any of them.</p></div>
+    <div class="card" data-show="2"><h4>GitHub</h4><p>The shared office where those folders live. People <b>propose</b> changes, others <b>review</b> them, robots <b>check</b> them, and the whole record is kept.</p></div>
+  </div>
+  <div class="iaas" data-show="3"><b>In the VM world</b>Think of the change ticket, the spreadsheet, the approval email and the CAB minutes: all in one place, and tied to exactly what changed.</div>
+  <aside class="notes">SAY: do not worry about the words. A notebook with a stamped page for every edit, and an office where the notebooks are shared and checked. We will spend the morning on this.</aside>
+</section>
+
+<section class="slide" data-id="eli5-k8s" data-part="Welcome" data-steps="4">
+  <div class="part">In plain terms · Kubernetes and GitOps</div>
+  <h2>Kubernetes runs your applications. GitOps means Git tells it how.</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Kubernetes</h4><p>A pool of computers you give instructions to: <b>"keep three copies of this running"</b>. It makes that true, and keeps it true.</p></div>
+    <div class="card" data-show="2"><h4>It looks after them</h4><p>If a copy fails it starts another. If a computer dies the work moves. Like a manager who keeps the right number of staff on shift.</p></div>
+    <div class="card" data-show="3"><h4>GitOps</h4><p>Those instructions are <b>files in Git</b>. Change the file, and the platform follows. Nobody types commands on the servers.</p></div>
+  </div>
+  <div class="iaas" data-show="4"><b>In the VM world</b>You build a server, install by hand, and hope test matches prod. Here you describe the result once, and the platform does it the same way every time.</div>
+  <aside class="notes">SAY: you do not need the vocabulary yet. Three ideas: a pool of computers, you say what you want, and the instructions live in Git. The afternoon fills in the detail.
+BRIDGE: next, this is interactive, so we need everyone on GitHub.</aside>
 </section>
 
 <section class="slide yourturn" data-id="get-on-github" data-scene="roster-setup" data-part="Welcome" data-steps="4">
-  <div class="part">Your turn · about 10 minutes · on your own device</div>
-  <h2>Get on GitHub</h2>
+  <div class="part">This session is interactive · about 10 minutes · on your own device</div>
+  <h2>Please create a GitHub account</h2>
   <div class="turn">
     <ol>
-      <li data-show="1">Go to <span class="mono">github.com/signup</span> and create a <b>free</b> account (or use the one you have).</li>
+      <li data-show="1">Go to <span class="mono">github.com/signup</span> and create a <b>free</b> account, or use the one you already have.</li>
       <li data-show="2">Verify your email address.</li>
       <li data-show="3">Tell the presenter your <b>first name</b> and your <b>GitHub username</b>.</li>
       <li data-show="4">Watch your inbox for an <b>invitation from GitHub</b> and accept it.</li>
     </ol>
   </div>
   <div class="crowd"></div>
-  <aside class="notes">Give people a few minutes. Read the names and usernames aloud; the assistant records them (first names only) and invites them. Names appear on this slide as they are added.
+  <aside class="notes">Give people a few minutes. Read the names and usernames aloud; the assistant records them (first names only) and invites them. Their avatars appear below as they are added. If someone has no picture, their initial shows instead.
 CHAT CUE: "Run scene roster-setup", then give the assistant the names and usernames as they come in.
 PRIVACY: a free account can be deleted afterwards. First names and handles only. They are shown here and stored in the cluster, not in the public repository.</aside>
 </section>
