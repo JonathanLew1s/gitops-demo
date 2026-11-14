@@ -19,7 +19,7 @@ BRIDGE: the next slide is the single most important one.</aside>
     <div class="lm-col legacy" data-show="1"><h4>Legacy: do the steps</h4><div class="card"><p>Log in to the server. Stop the service. Copy files. Edit the config. Start it. Hope.</p><p><i>"It works if you do it in the right order, and Dave is the one who knows the order."</i></p></div></div>
     <div class="lm-col modern" data-show="2"><h4>Modern: declare the result</h4><div class="card"><p><b>"I want 3 copies of version 2, with this much memory."</b></p><p>A controller compares that to reality, every few seconds, and fixes any difference.</p></div></div>
   </div>
-  <div class="onsite" data-show="3"><b>Like a thermostat.</b> You set 21°. You never decide when the heating turns on. That is the whole of Kubernetes, and of GitOps.</div>
+  <div class="onsite" data-show="3"><b>Desired state versus actual state.</b> A controller compares them every few seconds and corrects any difference. That is the whole of Kubernetes, and of GitOps.</div>
   <aside class="notes">SAY: this is the single most important slide. Everything after it is detail. "Desired state" versus "actual state", and a loop that closes the gap.
 INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIONS AS CODE: the procedures too (upgrade, rollback, scale, restore) become changes to that file.</aside>
 </section>
@@ -40,15 +40,15 @@ INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIO
   <aside class="notes">One line each. Do not stop to explain: the live look at the cluster, next, shows every one of them.</aside>
 </section>
 
-<section class="slide" data-id="live-see-it" data-scene="live-see-it" data-part="What is Kubernetes?" data-steps="4" data-live='["The servers (the cluster)", "The running copies (pods)", "The supervisor and its count (ReplicaSets)", "The front desk (Service)", "The department budget (quota)"]'>
+<section class="slide" data-id="live-see-it" data-scene="live-see-it" data-part="What is Kubernetes?" data-steps="4" data-live='["The servers (the cluster)", "The running copies (pods)", "The controller that keeps the count (ReplicaSets)", "The stable address (Service)", "The namespace limits (quota)"]'>
   <div class="part">Start here · Kubernetes · <span class="live-badge">LIVE</span></div>
   <h2>See the real thing</h2>
   <div class="term">
     <div data-show="0"><span class="p">$</span> kubectl get nodes   <span class="c"># the servers (the cluster)</span></div>
     <div data-show="1"><span class="p">$</span> kubectl -n gitops-demo get pods   <span class="c"># the running copies</span></div>
-    <div data-show="2"><span class="p">$</span> kubectl -n gitops-demo get replicasets   <span class="c"># the supervisor and its count</span></div>
-    <div data-show="3"><span class="p">$</span> kubectl -n gitops-demo get service   <span class="c"># the front desk</span></div>
-    <div data-show="4"><span class="p">$</span> kubectl -n gitops-demo describe resourcequota   <span class="c"># the department budget</span></div>
+    <div data-show="2"><span class="p">$</span> kubectl -n gitops-demo get replicasets   <span class="c"># the controller that keeps the count</span></div>
+    <div data-show="3"><span class="p">$</span> kubectl -n gitops-demo get service   <span class="c"># the stable address for the pods</span></div>
+    <div data-show="4"><span class="p">$</span> kubectl -n gitops-demo describe resourcequota   <span class="c"># the namespace limits (quota)</span></div>
   </div>
   <p class="sub">Each answer matches a tile, a table or a bar on the lesson page.</p>
   <aside class="notes">CHAT CUE: "Claude, run the see-it commands one at a time and explain each in one sentence." Only the gitops-demo namespace and the node list: never list other namespaces on screen.</aside>
@@ -75,7 +75,7 @@ CHAT CUE: none.</aside>
   <div class="part">Refresher · Kubernetes</div>
   <h2>Before we move on</h2>
   <div class="cols">
-    <div class="card" data-show="1"><h4>You describe it</h4><p>A controller keeps reality matching the description, like a thermostat.</p></div>
+    <div class="card" data-show="1"><h4>You describe it</h4><p>A controller keeps the actual state matching the description.</p></div>
     <div class="card" data-show="2"><h4>A pool, and copies</h4><p>The cluster is the pool of servers. A pod is one running copy.</p></div>
     <div class="card" data-show="3"><h4>A namespace is a team's area</h4><p>With its own budget, so one team cannot take everything.</p></div>
   </div>

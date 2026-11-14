@@ -54,8 +54,8 @@ ASK THE ROOM: "what changed here?" before pressing the last step.</aside>
     <div class="card"><h4>Differences on demand</h4><p>It compares two snapshots and shows exactly what changed, line by line. Red out, green in.</p></div>
     <div class="card"><h4>Nothing is lost</h4><p>Every earlier snapshot is still there. Go back to how it was last Tuesday in seconds.</p></div>
   </div>
-  <div class="iaas"><b>In the VM world</b>Word's "Track Changes", but for any file, the whole folder, kept forever, and impossible to quietly rewrite.</div>
-  <aside class="notes">SAY: forget the jargon for a minute. Git is "Track Changes" for a whole folder. You decide when to take a snapshot; Git can then show you the difference between any two.
+  <div class="iaas"><b>In the VM world</b>Versions kept as copies named final_v2_REAL, and a change log nobody trusts. Here every change to every file is recorded, kept, and cannot be quietly rewritten.</div>
+  <aside class="notes">SAY: Git is version control for a whole folder of files. You decide when to take a snapshot; Git can then show you the difference between any two.
 Press → once: the red and green lines are the change. Press again: the label (who, when, why) travels with it. Press again: the three ideas to remember.
 BRIDGE: next slides show how those snapshots chain together.</aside>
 </section>
@@ -72,7 +72,7 @@ BRIDGE: next slides show how those snapshots chain together.</aside>
     <div class="card" data-show="4"><h4>Control: who may change what</h4><p>Required approvals, protected branches, rules nobody can quietly bypass.</p></div>
   </div>
   <div class="iaas"><b>In the VM world</b>Someone logs into the test server (which everyone pretends matches prod) and clicks Next, Next, Next through the installer, hoping for the same result as dev. Here the steps run as code, every time: different people, same outcome.</div>
-  <aside class="notes">SAY: Git is the notebook. GitHub is the office around it: the robots, the minutes, the plug-ins and the rules.
+  <aside class="notes">SAY: Git keeps the history. GitHub adds the automation (Actions), the record (audit), the connections (integrations) and the rules (control).
 THE POINT: people vary, they get tired, they miss things. A process plus automation takes that variation out of the result.
 OPTIONAL HINT (do not go deep): checks can also run on your own machine before you even push (pre-commit).
 BUILD IS A SLIDE ONLY: this demo has no image build; the checks you will see are standards and secrets.</aside>
