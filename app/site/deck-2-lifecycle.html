@@ -67,6 +67,16 @@ ASK THE ROOM: how often has a change gone wrong because of a typo or a missed st
 KEY POINT: the thing that was reviewed is byte-for-byte the thing that was applied.</aside>
 </section>
 
+<section class="slide" data-id="cast-review" data-part="Life of a change" data-steps="1" data-cast='{"author":["Edit config/shop.yaml in the practice repo: change replicas","Say why in the commit message","Open a pull request","Wait for the robots","Fix what the reviewers ask for"],"reviewer-1":["Open the pull request","Read only the red and the green","Find the problem","Request changes, with a comment saying why"],"reviewer-2":["Open the same pull request","Check what the robots said","Read the first reviewer comment","Approve once it is fixed"],"owner":["Watch the merge button","Try to merge before two approvals: it is blocked","Merge once both have approved","Say what the history now records"]}'>
+  <div class="part">Life of a change · The cast</div>
+  <h2>One change, four people, two yeses</h2>
+  <div class="cast"></div>
+  <p class="sub" data-show="1">Everyone else: watch the pull request. Which step just happened?</p>
+  <aside class="notes">The exercise runs on the practice repository. Whisper to the Author one thing to get wrong (a replica count of 30, or a value that breaks the standards check) so the reviewers have something real to find.
+NEEDS the two-approval rule on the practice repository; ask the assistant to set it up first.
+The names come from the roster: ask the assistant to rotate roles before the next exercise.</aside>
+</section>
+
 <section class="slide" data-id="approvers" data-part="Life of a change" data-scene="approval-gate" data-steps="5" data-live='["Two of you are invited as reviewers", "A rule is switched on: two approvals and a robot check before anything ships", "Watch: the person who wrote a change cannot approve it"]'>
   <div class="part">Part 2 · Life of a change · <span class="live-badge">LIVE</span></div>
   <h2>Who is allowed to say yes?</h2>
