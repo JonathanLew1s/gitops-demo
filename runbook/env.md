@@ -6,6 +6,7 @@ Scenes use these names. A new team edits only this file; scenes stay the same.
 |---|---|---|
 | `DEMO_REPO` | `~/gitops-demo` | local clone of the application repo (what Argo CD deploys) |
 | `DEMO_REPO_SLUG` | `JonathanLew1s/gitops-demo` | GitHub owner/name of that repo |
+| `PRACTICE_REPO_SLUG` | `JonathanLew1s/gitops-practice` | separate public repo the room edits in the web editor (tag `practice-start` is its clean state) |
 | `NS` | `gitops-demo` | the namespace the demo runs in |
 | `ARGO_APP` | `gitops-demo` | Argo CD Application for the app (namespace `argocd`) |
 | `SITE` | `https://demo.instagib.co.uk` | public URL; fall back to a port-forward if the route is not up |

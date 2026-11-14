@@ -78,6 +78,87 @@ HEAD is "where you are standing right now".</aside>
 We will add the approvers' GitHub accounts live later and they will approve a real one.</aside>
 </section>
 
+<section class="slide" data-id="two-people" data-part="Git" data-steps="3">
+  <div class="part">Part 1 · Git · Two people, one file</div>
+  <h2>What happens when two people change the same line?</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Ana, on her branch</h4><p>Changes the number of copies from <b>3 to 4</b>: "peak traffic needs the headroom".</p></div>
+    <div class="card" data-show="2"><h4>Ben, on his branch</h4><p>Changes the same line from <b>3 to 2</b>: "save cost, traffic is quiet".</p></div>
+    <div class="card" data-show="3"><h4>Ana's change merges first</h4><p>Git cannot tell whose change should win. It <b>stops and asks a human</b>. That stop is a conflict.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>Two engineers edit the same config on the same server at the same time. Whoever saves last silently wins, and nobody knows a decision was lost.</div>
+  <aside class="notes">SAY: a conflict is not an error, it is Git refusing to guess. Different lines merge on their own; the same line needs a person.
+POINT: this is the "3 copies or 2" discussion you had in the last session, with the decision made visible.</aside>
+</section>
+
+<section class="slide" data-id="conflict-markers" data-part="Git" data-steps="4">
+  <div class="part">Part 1 · Git · Reading a conflict</div>
+  <h2>How Git shows you the disagreement</h2>
+  <div class="cols">
+    <div class="term">
+      <div class="file mono">config/shop.yaml</div>
+      <div>image: registry.example.com/shop:1.4.1</div>
+      <div class="rem" data-show="1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; fewer-copies</div>
+      <div class="rem" data-show="1">replicas: 2</div>
+      <div data-show="2">=======</div>
+      <div class="add" data-show="3">replicas: 4</div>
+      <div class="add" data-show="3">&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</div>
+      <div>resources:</div>
+    </div>
+    <div>
+      <div class="card" data-show="1"><h4>Top: your version</h4><p>What your branch says.</p></div>
+      <div class="card" data-show="2"><h4>The line of equals splits them</h4><p>Everything above is yours, everything below is theirs.</p></div>
+      <div class="card" data-show="3"><h4>Bottom: what is already in main</h4><p>The change that merged first.</p></div>
+    </div>
+  </div>
+  <p class="sub" data-show="4"><b>A person chooses</b>: keep one, keep the other, or write a new value. Delete the markers, save. The decision is a commit, recorded with who and why.</p>
+  <aside class="notes">Not a failure: the file is simply showing both sides so you can decide. GitHub offers a "Resolve conflicts" button that does this in the browser, with no installs.</aside>
+</section>
+
+<section class="slide yourturn" data-id="turn-branch-a" data-scene="branch-conflict" data-part="Git" data-steps="4">
+  <div class="part">Your turn · about 8 minutes · two people, one browser each</div>
+  <h2>Part A: share a branch</h2>
+  <div class="turn">
+    <p class="mono">github.com/JonathanLew1s/gitops-practice</p>
+    <ol>
+      <li data-show="1"><b>Person 1:</b> open <b>config/shop.yaml</b>, click the branch menu, type <span class="mono">team-1</span> and choose <b>Create branch</b>.</li>
+      <li data-show="2"><b>Person 1:</b> change <span class="mono">memory</span> to <span class="mono">1Gi</span>. Write why. Commit to <b>team-1</b>.</li>
+      <li data-show="3"><b>Person 2:</b> switch to <b>team-1</b>, change <span class="mono">cpu</span> to <span class="mono">750m</span>. Write why. Commit.</li>
+      <li data-show="4">Open a pull request from <b>team-1</b>. Two commits, two people, one branch: does it merge cleanly? <b>Merge it.</b></li>
+    </ol>
+  </div>
+  <aside class="notes">BEFORE THIS: tell Claude "Run scene branch-conflict" and give it the volunteers' GitHub usernames; it invites them with write access. They must accept the emailed invitation.
+EXPECT: different lines, so it merges with no conflict. The point: two people can work on the same branch safely when they touch different lines. The pull request shows both authors.
+OTHERS FOLLOW ALONG on the projector; only invited people can commit.</aside>
+</section>
+
+<section class="slide yourturn" data-id="turn-branch-b" data-part="Git" data-steps="4">
+  <div class="part">Your turn · about 8 minutes · two people, one browser each</div>
+  <h2>Part B: now make them collide</h2>
+  <div class="turn">
+    <ol>
+      <li data-show="1"><b>Both:</b> create your own branch from <b>main</b> (<span class="mono">more-copies</span> and <span class="mono">fewer-copies</span>). Change the <span class="mono">replicas</span> line to <b>different numbers</b>, and write why.</li>
+      <li data-show="2">Each of you opens a pull request. <b>Merge the first one.</b></li>
+      <li data-show="3">Look at the second pull request: <b>"This branch has conflicts"</b>. Click <b>Resolve conflicts</b>. Read the markers.</li>
+      <li data-show="4">Agree a number together, delete the markers, mark resolved, commit. The checks run again. Who decided, and where is it recorded?</li>
+    </ol>
+  </div>
+  <aside class="notes">EXPECT: GitHub shows the conflict on the second PR and its web editor has a Resolve conflicts button.
+DISCUSSION: let them argue about 2 versus 4 for a minute. The number matters less than seeing that a human had to decide and that it is on the record.
+IF THE ROOM STALLS: tell Claude to run the backup (see Plan B of branch-conflict) so the conflict appears anyway.</aside>
+</section>
+
+<section class="slide" data-id="refresher-branch" data-part="Git" data-steps="3">
+  <div class="part">Refresher · Branches</div>
+  <h2>Before we move on</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>A branch is a safe draft</h4><p>Production is untouched until it merges.</p></div>
+    <div class="card" data-show="2"><h4>Different lines merge on their own</h4><p>Two people can share a branch safely.</p></div>
+    <div class="card" data-show="3"><h4>The same line stops and asks</h4><p>A human decides, and the decision is recorded.</p></div>
+  </div>
+  <aside class="notes">One sentence per card, then straight on.</aside>
+</section>
+
 <section class="slide" data-id="pullpush" data-part="Git" data-steps="4">
   <div class="part">Part 1 · Git</div>
   <h2>Pull &amp; push: working as a team</h2>
