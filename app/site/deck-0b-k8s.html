@@ -1,0 +1,83 @@
+<section class="slide" data-id="k8s-what" data-part="What is Kubernetes?" data-steps="3">
+  <div class="part">Start here · Kubernetes</div>
+  <h2>What is Kubernetes?</h2>
+  <p class="sub">A pool of servers that runs your applications for you.</p>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Many machines, one pool</h4><p>The servers behind this page are four ordinary machines. Kubernetes treats them as one.</p></div>
+    <div class="card" data-show="2"><h4>You hand it applications</h4><p>It decides which machine runs each one. You do not pick a server.</p></div>
+    <div class="card" data-show="3"><h4>It keeps them running</h4><p>If a copy fails, it starts another. If a machine dies, the work moves.</p></div>
+  </div>
+  <div class="iaas"><b>In the VM world</b>You request a VM, size it, install the application, patch it, and own that server for years. Here you say what you want, and the pool works out where and how.</div>
+  <aside class="notes">SAY: not a product to learn today, an idea to recognise. A pool of machines that you describe work to, instead of logging into one.
+BRIDGE: the next slide is the single most important one.</aside>
+</section>
+
+<section class="slide" data-id="declare" data-part="What is Kubernetes?" data-steps="3">
+  <div class="part">Start here · Kubernetes</div>
+  <h2>Declare what you want. Don't do the steps.</h2>
+  <div class="legacy-modern">
+    <div class="lm-col legacy" data-show="1"><h4>Legacy: do the steps</h4><div class="card"><p>Log in to the server. Stop the service. Copy files. Edit the config. Start it. Hope.</p><p><i>"It works if you do it in the right order, and Dave is the one who knows the order."</i></p></div></div>
+    <div class="lm-col modern" data-show="2"><h4>Modern: declare the result</h4><div class="card"><p><b>"I want 3 copies of version 2, with this much memory."</b></p><p>A controller compares that to reality, every few seconds, and fixes any difference.</p></div></div>
+  </div>
+  <div class="onsite" data-show="3"><b>Like a thermostat.</b> You set 21°. You never decide when the heating turns on. That is the whole of Kubernetes, and of GitOps.</div>
+  <aside class="notes">SAY: this is the single most important slide. Everything after it is detail. "Desired state" versus "actual state", and a loop that closes the gap.
+INFRASTRUCTURE AS CODE: the description of what we want is a text file. OPERATIONS AS CODE: the procedures too (upgrade, rollback, scale, restore) become changes to that file.</aside>
+</section>
+
+<section class="slide" data-id="k8s-terms" data-part="What is Kubernetes?" data-steps="5">
+  <div class="part">Start here · Kubernetes</div>
+  <h2>Five words you will hear</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>Cluster</h4><p>The whole pool of servers working together.</p></div>
+    <div class="card" data-show="2"><h4>Node</h4><p>One server in the pool.</p></div>
+    <div class="card" data-show="3"><h4>Pod</h4><p>One running copy of an application.</p></div>
+  </div>
+  <div class="cols">
+    <div class="card" data-show="4"><h4>Replica</h4><p>How many copies you asked for.</p></div>
+    <div class="card" data-show="5"><h4>Namespace</h4><p>A named area for one team's things, with its own budget.</p></div>
+  </div>
+  <p class="sub">Each of these comes back later, with something to see.</p>
+  <aside class="notes">One line each. Do not stop to explain: the live look at the cluster, next, shows every one of them.</aside>
+</section>
+
+<section class="slide" data-id="live-see-it" data-scene="live-see-it" data-part="What is Kubernetes?" data-steps="4" data-live='["The servers (the cluster)", "The running copies (pods)", "The supervisor and its count (ReplicaSets)", "The front desk (Service)", "The department budget (quota)"]'>
+  <div class="part">Start here · Kubernetes · <span class="live-badge">LIVE</span></div>
+  <h2>See the real thing</h2>
+  <div class="term">
+    <div data-show="0"><span class="p">$</span> kubectl get nodes   <span class="c"># the servers (the cluster)</span></div>
+    <div data-show="1"><span class="p">$</span> kubectl -n gitops-demo get pods   <span class="c"># the running copies</span></div>
+    <div data-show="2"><span class="p">$</span> kubectl -n gitops-demo get replicasets   <span class="c"># the supervisor and its count</span></div>
+    <div data-show="3"><span class="p">$</span> kubectl -n gitops-demo get service   <span class="c"># the front desk</span></div>
+    <div data-show="4"><span class="p">$</span> kubectl -n gitops-demo describe resourcequota   <span class="c"># the department budget</span></div>
+  </div>
+  <p class="sub">Each answer matches a tile, a table or a bar on the lesson page.</p>
+  <aside class="notes">CHAT CUE: "Claude, run the see-it commands one at a time and explain each in one sentence." Only the gitops-demo namespace and the node list: never list other namespaces on screen.</aside>
+</section>
+
+<section class="slide yourturn" data-id="turn-0b" data-part="What is Kubernetes?" data-steps="4">
+  <div class="part">Your turn · about 5 minutes · on your own device</div>
+  <h2>Find it on the lesson page</h2>
+  <div class="turn">
+    <p class="mono">demo.instagib.co.uk</p>
+    <ol>
+      <li data-show="1">Which <b>version</b> of the backend is running, and what <b>colour</b> is the message?</li>
+      <li data-show="2">How many <b>pod tiles</b> can you see? Which of the five words is each tile?</li>
+      <li data-show="3">Watch the <b>availability bar</b>. What do you think would turn it red?</li>
+      <li data-show="4">Stretch: match each line of the terminal output we just saw to something on the page.</li>
+    </ol>
+  </div>
+  <aside class="notes">The page is public; nothing to install and no login. If the public address is not up, use the screen-share.
+EXPECT: version 6.5.0 in red at the start, one tile, a green availability bar. Collect two guesses for what turns the bar red before moving on: the answer arrives in the resilience section.
+CHAT CUE: none.</aside>
+</section>
+
+<section class="slide" data-id="refresher-0b" data-part="What is Kubernetes?" data-steps="3">
+  <div class="part">Refresher · Kubernetes</div>
+  <h2>Before we move on</h2>
+  <div class="cols">
+    <div class="card" data-show="1"><h4>You describe it</h4><p>A controller keeps reality matching the description, like a thermostat.</p></div>
+    <div class="card" data-show="2"><h4>A pool, and copies</h4><p>The cluster is the pool of servers. A pod is one running copy.</p></div>
+    <div class="card" data-show="3"><h4>A namespace is a team's area</h4><p>With its own budget, so one team cannot take everything.</p></div>
+  </div>
+  <aside class="notes">One sentence per card, then straight on.</aside>
+</section>
