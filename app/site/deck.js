@@ -18,18 +18,20 @@ async function loadRoster() {
   try { const r = await fetch('/roster.json', { cache: 'no-store' }); roster = r.ok ? await r.json() : {}; } catch (e) { roster = {}; }
 }
 const who = (role) => (roster.roles || {})[role];
+// GitHub serves any public avatar at github.com/<user>.png; if it does not load, the initial shows instead.
+const avatar = (p) => `<span class="avatar"><b>${esc((p.name || '?').trim().charAt(0).toUpperCase())}</b>${p.github ? `<img src="https://github.com/${encodeURIComponent(p.github)}.png?size=96" alt="" loading="lazy" onerror="this.remove()">` : ''}</span>`;
 function personalise(root) {
   $$('[data-role]', root).forEach((el) => { const p = who(el.dataset.role); el.textContent = p ? p.name : (ROLES.find((r) => r[0] === el.dataset.role) || [0, el.dataset.role])[1]; });
   $$('.cast', root).forEach((c) => {
     const steps = JSON.parse(c.closest('section').dataset.cast || '{}');
     c.innerHTML = ROLES.map(([k, label]) => {
       const p = who(k);
-      return `<div class="castcard${p ? '' : ' empty'}"><div class="role">${esc(label)}</div><div class="pname">${p ? esc(p.name) : 'Volunteer needed'}</div>${p && p.github ? `<div class="handle mono">@${esc(p.github)}</div>` : ''}${(steps[k] || []).length ? `<ol>${steps[k].map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : ''}</div>`;
+      return `<div class="castcard${p ? '' : ' empty'}"><div class="role">${esc(label)}</div>${p ? avatar(p) : ''}<div class="pname">${p ? esc(p.name) : 'Volunteer needed'}</div>${p && p.github ? `<div class="handle mono">@${esc(p.github)}</div>` : ''}${(steps[k] || []).length ? `<ol>${steps[k].map((t) => `<li>${esc(t)}</li>`).join('')}</ol>` : ''}</div>`;
     }).join('');
   });
   $$('.crowd', root).forEach((c) => {
     const ps = roster.people || [];
-    c.innerHTML = ps.length ? ps.map((p) => `<span class="chip">${esc(p.name)} <span class="mono">@${esc(p.github || '')}</span></span>`).join('') : '<span class="hint">Names appear here as people join.</span>';
+    c.innerHTML = ps.length ? ps.map((p) => `<span class="chip">${avatar(p)} ${esc(p.name)} <span class="mono">@${esc(p.github || '')}</span></span>`).join('') : '<span class="hint">Names appear here as people join.</span>';
   });
 }
 setInterval(async () => { const s = slides[idx]; if (s && (s.querySelector('.cast') || s.querySelector('.crowd') || s.querySelector('[data-role]'))) { await loadRoster(); personalise(s); } }, 5000);
